@@ -4637,6 +4637,8 @@ MonoBehaviour:
   attackRate: 0.5
   attackRange: 3
   weaponInHand: {fileID: 11400000, guid: 9490ffb064dec0f428c922b92bcf5ea6, type: 2}
+  animatorOverrideController: {fileID: 22100000, guid: b3e8bd1406761eb489cf61ada8cc1ee3,
+    type: 2}
 --- !u!114 &114290171594641936
 MonoBehaviour:
   m_ObjectHideFlags: 1

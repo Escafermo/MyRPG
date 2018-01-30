@@ -3,101 +3,108 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityStandardAssets.Characters.ThirdPerson;
 
-public class Enemy : MonoBehaviour, IDamageable
+// TODO consider re-wiring;
+using RPG.Core;
+using RPG.Weapon;
+
+namespace RPG.Characters
 {
-
-    [SerializeField] float maxHealthPoints = 100f;
-    [SerializeField] float damagePerShot = 9f;
-
-    [SerializeField] float moveToPlayerRadius = 10f;
-    [SerializeField] float attackPlayerRadius = 5f;
-    [SerializeField] float chasePlayerRadius = 50f; //TODO make enemy have a bigger chase radius after seeign the player for the 1st time
-
-    [SerializeField] GameObject projectileToUse;
-    [SerializeField] GameObject projectileSpawnSocket;
-    [SerializeField] float projectileFrequency = 1f;
-    [SerializeField] Vector3 verticalAimOffset = new Vector3(0,1f,0);
-
-    private float currentHealthPoints = 100;
-    private bool isAttacking = false;
-
-    AICharacterControl aiCharacter = null;
-    GameObject player = null;
-
-    private void Start()
+    public class Enemy : MonoBehaviour, IDamageable
     {
-        player = GameObject.FindGameObjectWithTag("Player");
-        aiCharacter = GetComponent<AICharacterControl>();
 
-        currentHealthPoints = maxHealthPoints;
-    }
+        [SerializeField] float maxHealthPoints = 100f;
+        [SerializeField] float damagePerShot = 9f;
 
-    private void Update()
-    {
-        float distanceToPlayer = Vector3.Distance(player.transform.position,transform.position);
-        
-        if (distanceToPlayer <= attackPlayerRadius && !isAttacking)
+        [SerializeField] float moveToPlayerRadius = 10f;
+        [SerializeField] float attackPlayerRadius = 5f;
+        [SerializeField] float chasePlayerRadius = 50f; //TODO make enemy have a bigger chase radius after seeign the player for the 1st time
+
+        [SerializeField] GameObject projectileToUse;
+        [SerializeField] GameObject projectileSpawnSocket;
+        [SerializeField] float projectileFrequency = 1f;
+        [SerializeField] Vector3 verticalAimOffset = new Vector3(0, 1f, 0);
+
+        private float currentHealthPoints = 100;
+        private bool isAttacking = false;
+
+        AICharacterControl aiCharacter = null;
+        GameObject player = null;
+
+        private void Start()
         {
-            isAttacking = true;
-            InvokeRepeating("FireProjectile", 0f, projectileFrequency); // TODO switch to coroutines
-        }
-        if (distanceToPlayer > attackPlayerRadius)
-        {
-            isAttacking = false;
-            CancelInvoke();
+            player = GameObject.FindGameObjectWithTag("Player");
+            aiCharacter = GetComponent<AICharacterControl>();
+
+            currentHealthPoints = maxHealthPoints;
         }
 
-        if (distanceToPlayer <= moveToPlayerRadius)
+        private void Update()
         {
-            aiCharacter.SetTarget(player.transform);
+            float distanceToPlayer = Vector3.Distance(player.transform.position, transform.position);
+
+            if (distanceToPlayer <= attackPlayerRadius && !isAttacking)
+            {
+                isAttacking = true;
+                InvokeRepeating("FireProjectile", 0f, projectileFrequency); // TODO switch to coroutines
+            }
+            if (distanceToPlayer > attackPlayerRadius)
+            {
+                isAttacking = false;
+                CancelInvoke();
+            }
+
+            if (distanceToPlayer <= moveToPlayerRadius)
+            {
+                aiCharacter.SetTarget(player.transform);
+            }
+            else
+            {
+                aiCharacter.SetTarget(null);
+            }
+
         }
-        else
+
+
+        public void TakeDamage(float damage)
         {
-            aiCharacter.SetTarget(null);
+            currentHealthPoints = Mathf.Clamp(currentHealthPoints - damage, 0f, maxHealthPoints);
+            if (currentHealthPoints <= 0)
+            {
+                Destroy(gameObject);
+            }
         }
 
-    }
-
-    
-    public void TakeDamage(float damage)
-    {
-        currentHealthPoints = Mathf.Clamp(currentHealthPoints - damage, 0f, maxHealthPoints);
-        if (currentHealthPoints <= 0)
+        public float healthAsPercentage
         {
-            Destroy(gameObject);
+            get
+            {
+                return currentHealthPoints / (float)maxHealthPoints;
+            }
         }
-    }
 
-    public float healthAsPercentage
-    {
-        get
+        // TODO Separate out Shooter firing logic insto separate class
+        public void FireProjectile()
         {
-            return currentHealthPoints / (float)maxHealthPoints;
+            GameObject newProjectile = Instantiate(projectileToUse, projectileSpawnSocket.transform.position, Quaternion.identity);
+            Projectile projectileComponent = newProjectile.GetComponent<Projectile>();
+            projectileComponent.SetDamage(damagePerShot);
+            projectileComponent.SetShooter(gameObject);
+
+            Vector3 unitVectorToPlayer = ((player.transform.position + (verticalAimOffset)) - projectileSpawnSocket.transform.position).normalized;
+            float thisProjectileSpeed = projectileComponent.GetDefaultLaunchSpeed();
+            newProjectile.GetComponent<Rigidbody>().velocity = unitVectorToPlayer * thisProjectileSpeed;
         }
+
+        private void OnDrawGizmos()
+        {
+            //Draw attack gizmos
+            Gizmos.color = new Color(255f, 0f, 0f, 0.5f);
+            Gizmos.DrawWireSphere(transform.position, moveToPlayerRadius);
+
+            Gizmos.color = new Color(0f, 0f, 255f, 0.5f);
+            Gizmos.DrawWireSphere(transform.position, attackPlayerRadius);
+        }
+
+
     }
-
-    // TODO Separate out Shooter firing logic insto separate class
-    public void FireProjectile ()
-    {
-        GameObject newProjectile = Instantiate(projectileToUse, projectileSpawnSocket.transform.position, Quaternion.identity);
-        Projectile projectileComponent = newProjectile.GetComponent<Projectile>();
-        projectileComponent.SetDamage(damagePerShot);
-        projectileComponent.SetShooter(gameObject);
-
-        Vector3 unitVectorToPlayer = ((player.transform.position+(verticalAimOffset)) - projectileSpawnSocket.transform.position).normalized;
-        float thisProjectileSpeed = projectileComponent.GetDefaultLaunchSpeed();
-        newProjectile.GetComponent<Rigidbody>().velocity = unitVectorToPlayer * thisProjectileSpeed;
-    }
-
-    private void OnDrawGizmos()
-    {
-        //Draw attack gizmos
-        Gizmos.color = new Color(255f, 0f, 0f, 0.5f);
-        Gizmos.DrawWireSphere(transform.position, moveToPlayerRadius);
-
-        Gizmos.color = new Color(0f, 0f, 255f, 0.5f);
-        Gizmos.DrawWireSphere(transform.position, attackPlayerRadius);
-    }
-
-
 }

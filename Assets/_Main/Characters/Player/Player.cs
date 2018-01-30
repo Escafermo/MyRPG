@@ -5,86 +5,116 @@ using UnityEngine;
 using UnityStandardAssets.Characters.ThirdPerson;
 using UnityEngine.Assertions;
 
-public class Player : MonoBehaviour, IDamageable {
+// TODO consider re-wiring:
+using RPG.CameraUI; 
+using RPG.Core; 
+using RPG.Weapon;
 
-    [SerializeField] float maxHealthPoints = 100f;
-    [SerializeField] float playerDamage = 10f;
-    [SerializeField] float attackRate = 0.5f;
-    [SerializeField] float attackRange = 2f;
-    [SerializeField] Weapons weaponInHand;
-
-    [SerializeField] const int enemyLayerNumber = 9;
-    
-    private float currentHealthPoints;
-    private float lastHitTime = 0f;
-
-    CameraRaycaster cameraRaycaster = null;
-
-    void Start()
+namespace RPG.Characters
+{
+    public class Player : MonoBehaviour, IDamageable
     {
-        cameraRaycaster = Camera.main.GetComponent<CameraRaycaster>();
-        cameraRaycaster.notifyMouseClickObservers += OnMouseClick;
 
-        currentHealthPoints = maxHealthPoints;
+        [SerializeField] float maxHealthPoints = 100f;
+        [SerializeField] float playerDamage = 10f;
+        [SerializeField] float attackRate = 0.5f;
+        [SerializeField] float attackRange = 2f;
+        [SerializeField] Weapon.Weapons weaponInHand;
+        [SerializeField] AnimatorOverrideController animatorOverrideController;
 
-        PutWeaponInHand();
-    }
+        [SerializeField] const int enemyLayerNumber = 9;
 
-    private void PutWeaponInHand()
-    {
-        var weaponPrefab = weaponInHand.GetWeaponPrefab();
-        GameObject weaponHoldingHand = RequestHoldingHand();
-        var weapon = Instantiate(weaponPrefab, weaponHoldingHand.transform);
-        weapon.transform.localPosition = weaponInHand.gripTransform.localPosition;
-        weapon.transform.localRotation = weaponInHand.gripTransform.localRotation;
-    }
+        private float currentHealthPoints;
+        private float lastHitTime = 0f;
 
-    private GameObject RequestHoldingHand()
-    {
-        var weaponHoldingHand = GetComponentsInChildren<HandWeapon>();
-        int numberOfHoldingHands = weaponHoldingHand.Length;
-        Assert.AreNotEqual(numberOfHoldingHands , 0, "No holding hand found, add script to hand");
-        Assert.IsFalse(numberOfHoldingHands > 1, "Multiple holding hands found, remove script from hand(s)");
-        return weaponHoldingHand[0].gameObject;
-    }
+        CameraRaycaster cameraRaycaster = null;
 
-    void OnMouseClick(RaycastHit raycastHit, int layerHit)
-    {
-        if (layerHit == enemyLayerNumber)
+        void Start()
         {
-            var enemy = raycastHit.collider.gameObject;
+            RegisterForMouseClick();
+            GetMaxHealth();
+            PutWeaponInHand();
+            OverrideAnimatorController();
+        }
 
-            if ((enemy.transform.position - transform.position).magnitude > attackRange)
+        private void GetMaxHealth()
+        {
+            currentHealthPoints = maxHealthPoints;
+        }
+
+        private void RegisterForMouseClick()
+        {
+            cameraRaycaster = Camera.main.GetComponent<CameraRaycaster>();
+            cameraRaycaster.notifyMouseClickObservers += OnMouseClick;
+        }
+
+        private void OverrideAnimatorController()
+        {
+            var animator = GetComponent<Animator>();
+            animator.runtimeAnimatorController = animatorOverrideController;
+            animatorOverrideController["DEFAULT ATTACK"] = weaponInHand.GetAttackAnimationClip();  // TODO remove const
+        }
+
+        private void PutWeaponInHand()
+        {
+            var weaponPrefab = weaponInHand.GetWeaponPrefab();
+            GameObject weaponHoldingHand = RequestHoldingHand();
+            var weapon = Instantiate(weaponPrefab, weaponHoldingHand.transform);
+            weapon.transform.localPosition = weaponInHand.gripTransform.localPosition;
+            weapon.transform.localRotation = weaponInHand.gripTransform.localRotation;
+        }
+
+        private GameObject RequestHoldingHand()
+        {
+            var weaponHoldingHand = GetComponentsInChildren<HandWeapon>();
+            int numberOfHoldingHands = weaponHoldingHand.Length;
+            Assert.AreNotEqual(numberOfHoldingHands, 0, "No holding hand found, add script to hand");
+            Assert.IsFalse(numberOfHoldingHands > 1, "Multiple holding hands found, remove script from hand(s)");
+            return weaponHoldingHand[0].gameObject;
+        }
+
+        void OnMouseClick(RaycastHit raycastHit, int layerHit)
+        {
+            if (layerHit == enemyLayerNumber)
             {
-                return;
-            }
+                var enemy = raycastHit.collider.gameObject;
 
-            var enemyComponent = enemy.GetComponent<Enemy>();
-            if(Time.time - lastHitTime > attackRate)
+                if ((enemy.transform.position - transform.position).magnitude > attackRange)
+                {
+                    return;
+                }
+
+                var enemyComponent = enemy.GetComponent<Enemy>();
+                if (Time.time - lastHitTime > attackRate)
+                {
+                    var animator = GetComponent<Animator>();
+                    animator.SetTrigger("Attack");
+
+                    enemyComponent.TakeDamage(playerDamage);
+
+                    lastHitTime = Time.time;
+                }
+            }
+        }
+
+        public float healthAsPercentage
+        {
+            get
             {
-                enemyComponent.TakeDamage(playerDamage);
-                lastHitTime = Time.time;
+                return currentHealthPoints / (float)maxHealthPoints;
             }
         }
-    }
 
-    public float  healthAsPercentage
-    {
-        get
+        public void TakeDamage(float damage)
         {
-            return currentHealthPoints / (float)maxHealthPoints;
+            currentHealthPoints = Mathf.Clamp(currentHealthPoints - damage, 0f, maxHealthPoints);
+            if (currentHealthPoints <= 0)
+            {
+                //Destroy(gameObject);
+                Debug.LogError("Player dead");
+            }
         }
+
+
     }
-
-    public void TakeDamage(float damage)
-    {
-        currentHealthPoints = Mathf.Clamp(currentHealthPoints - damage, 0f, maxHealthPoints);
-        if (currentHealthPoints <= 0)
-        {
-            //Destroy(gameObject);
-            Debug.LogError("Player dead");
-        }
-    }
-
-
 }
