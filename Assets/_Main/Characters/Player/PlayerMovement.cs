@@ -13,7 +13,6 @@ public class PlayerMovement : MonoBehaviour
     CameraRaycaster cameraRaycaster = null;
     AICharacterControl aiCharacter = null;
     GameObject walkTarget = null;
-    Vector3 currentClickDestination;
 
     [SerializeField] const int buttonCursorNumber = 5;
     [SerializeField] const int walkCursorNumber = 8;
@@ -25,7 +24,6 @@ public class PlayerMovement : MonoBehaviour
     {
         cameraRaycaster = Camera.main.GetComponent<CameraRaycaster>();
         thirdPersonPlayer = GetComponent<ThirdPersonCharacter>();
-        currentClickDestination = transform.position;
         aiCharacter = GetComponent<AICharacterControl>();
         walkTarget = new GameObject("walkTarget");
 

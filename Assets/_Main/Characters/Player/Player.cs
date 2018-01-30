@@ -1,7 +1,9 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityStandardAssets.Characters.ThirdPerson;
+using UnityEngine.Assertions;
 
 public class Player : MonoBehaviour, IDamageable {
 
@@ -9,14 +11,14 @@ public class Player : MonoBehaviour, IDamageable {
     [SerializeField] float playerDamage = 10f;
     [SerializeField] float attackRate = 0.5f;
     [SerializeField] float attackRange = 2f;
-    
+    [SerializeField] Weapons weaponInHand;
+
     [SerializeField] const int enemyLayerNumber = 9;
     
     private float currentHealthPoints;
     private float lastHitTime = 0f;
 
     CameraRaycaster cameraRaycaster = null;
-    GameObject currentTarget;
 
     void Start()
     {
@@ -24,6 +26,26 @@ public class Player : MonoBehaviour, IDamageable {
         cameraRaycaster.notifyMouseClickObservers += OnMouseClick;
 
         currentHealthPoints = maxHealthPoints;
+
+        PutWeaponInHand();
+    }
+
+    private void PutWeaponInHand()
+    {
+        var weaponPrefab = weaponInHand.GetWeaponPrefab();
+        GameObject weaponHoldingHand = RequestHoldingHand();
+        var weapon = Instantiate(weaponPrefab, weaponHoldingHand.transform);
+        weapon.transform.localPosition = weaponInHand.gripTransform.localPosition;
+        weapon.transform.localRotation = weaponInHand.gripTransform.localRotation;
+    }
+
+    private GameObject RequestHoldingHand()
+    {
+        var weaponHoldingHand = GetComponentsInChildren<HandWeapon>();
+        int numberOfHoldingHands = weaponHoldingHand.Length;
+        Assert.AreNotEqual(numberOfHoldingHands , 0, "No holding hand found, add script to hand");
+        Assert.IsFalse(numberOfHoldingHands > 1, "Multiple holding hands found, remove script from hand(s)");
+        return weaponHoldingHand[0].gameObject;
     }
 
     void OnMouseClick(RaycastHit raycastHit, int layerHit)
@@ -36,8 +58,6 @@ public class Player : MonoBehaviour, IDamageable {
             {
                 return;
             }
-
-            currentTarget = enemy;
 
             var enemyComponent = enemy.GetComponent<Enemy>();
             if(Time.time - lastHitTime > attackRate)

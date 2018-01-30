@@ -9,8 +9,6 @@ public class MusicManager : MonoBehaviour {
 
     [SerializeField] Collider thisCollider;
 
-    float colliderIndex = 0f;
-
     private void Start()
     {
         audioSource = GameObject.FindObjectOfType<AudioSource>();
@@ -18,12 +16,14 @@ public class MusicManager : MonoBehaviour {
 
     private void OnTriggerEnter(Collider thisCollider)
     {
-        audioSource.clip = audioClip;
-        audioSource.Play();
+        if (thisCollider.tag == "Player")
+        {
+            audioSource.clip = audioClip;
+            audioSource.Play();
+        } else
+        {
+            return;
+        }
 
     }
-
-
-
-
 }

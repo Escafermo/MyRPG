@@ -27,19 +27,15 @@ public class CameraRaycaster : MonoBehaviour
 
     void Update()
 	{
-        
-
-
-
         // Check if pointer is over an interactable UI element
-        if (EventSystem.current.IsPointerOverGameObject ())
-		{
-			NotifyObserersIfLayerChanged (5);
-			return; // Stop looking for other objects
-		}
+        if (EventSystem.current.IsPointerOverGameObject())
+        {
+            NotifyObserersIfLayerChanged(5);
+            return; // Stop looking for other objects
+        }
 
-		// Raycast to max depth, every frame as things can move under mouse
-		Ray ray = Camera.main.ScreenPointToRay (Input.mousePosition);
+        // Raycast to max depth, every frame as things can move under mouse
+        Ray ray = Camera.main.ScreenPointToRay (Input.mousePosition);
 		RaycastHit[] raycastHits = Physics.RaycastAll (ray, maxRaycastDepth);
 
         RaycastHit? priorityHit = FindTopPriorityHit(raycastHits);

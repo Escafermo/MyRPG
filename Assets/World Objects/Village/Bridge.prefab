@@ -20,7 +20,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4773945709427604}
   - component: {fileID: 64087219811110432}
-  m_Layer: 8
+  m_Layer: 0
   m_Name: Bridge
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -37,7 +37,7 @@ GameObject:
   - component: {fileID: 4117486393850804}
   - component: {fileID: 33233128623177396}
   - component: {fileID: 23894725129553062}
-  m_Layer: 8
+  m_Layer: 0
   m_Name: Bridge
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -63,14 +63,14 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1642192000386654}
-  m_LocalRotation: {x: -0, y: -0.5248177, z: -0, w: 0.85121465}
-  m_LocalPosition: {x: 58.745266, y: -16.2, z: 12.104595}
-  m_LocalScale: {x: 4, y: 2, z: 2}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 20, y: 0, z: 77}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4117486393850804}
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: -63.312004, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!23 &23894725129553062
 MeshRenderer:
   m_ObjectHideFlags: 1
