@@ -12,7 +12,19 @@ namespace RPG.Weapon
 
         [SerializeField] GameObject weaponPrefab;
         [SerializeField] AnimationClip attackAnimation;
+        [SerializeField] float attackRate = 0.5f;
+        [SerializeField] float attackRange = 2f;
 
+        public float GetAttackRate()
+        {
+            // TODO consider whether we take animation time into account
+            return attackRate;
+        }
+
+        public float GetAttackRange()
+        {
+            return attackRange;
+        }
 
         public GameObject GetWeaponPrefab()
         {

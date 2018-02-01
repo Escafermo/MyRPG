@@ -17,10 +17,10 @@ namespace RPG.Characters
 
         [SerializeField] float maxHealthPoints = 100f;
         [SerializeField] float playerDamage = 10f;
-        [SerializeField] float attackRate = 0.5f;
-        [SerializeField] float attackRange = 2f;
+        
         [SerializeField] Weapon.Weapons weaponInHand;
         [SerializeField] AnimatorOverrideController animatorOverrideController;
+        Animator animator;
 
         [SerializeField] const int enemyLayerNumber = 9;
 
@@ -37,6 +37,24 @@ namespace RPG.Characters
             OverrideAnimatorController();
         }
 
+        public void TakeDamage(float damage)
+        {
+            currentHealthPoints = Mathf.Clamp(currentHealthPoints - damage, 0f, maxHealthPoints);
+            if (currentHealthPoints <= 0)
+            {
+                //Destroy(gameObject);
+                //Debug.LogError("Player dead");
+            }
+        }
+
+        public float healthAsPercentage
+        {
+            get
+            {
+                return currentHealthPoints / (float)maxHealthPoints;
+            }
+        }
+
         private void GetMaxHealth()
         {
             currentHealthPoints = maxHealthPoints;
@@ -50,7 +68,7 @@ namespace RPG.Characters
 
         private void OverrideAnimatorController()
         {
-            var animator = GetComponent<Animator>();
+            animator = GetComponent<Animator>();
             animator.runtimeAnimatorController = animatorOverrideController;
             animatorOverrideController["DEFAULT ATTACK"] = weaponInHand.GetAttackAnimationClip();  // TODO remove const
         }
@@ -78,43 +96,28 @@ namespace RPG.Characters
             if (layerHit == enemyLayerNumber)
             {
                 var enemy = raycastHit.collider.gameObject;
-
-                if ((enemy.transform.position - transform.position).magnitude > attackRange)
+                if (IsEnemyInRange(enemy))
                 {
-                    return;
-                }
-
-                var enemyComponent = enemy.GetComponent<Enemy>();
-                if (Time.time - lastHitTime > attackRate)
-                {
-                    var animator = GetComponent<Animator>();
-                    animator.SetTrigger("Attack");
-
-                    enemyComponent.TakeDamage(playerDamage);
-
-                    lastHitTime = Time.time;
+                    AttackEnemy(enemy);
                 }
             }
         }
 
-        public float healthAsPercentage
+        private bool IsEnemyInRange(GameObject target)
         {
-            get
-            {
-                return currentHealthPoints / (float)maxHealthPoints;
-            }
+            float distanceToEnemy = (target.transform.position - transform.position).magnitude;
+            return distanceToEnemy <= weaponInHand.GetAttackRange();
         }
 
-        public void TakeDamage(float damage)
+        private void AttackEnemy(GameObject target)
         {
-            currentHealthPoints = Mathf.Clamp(currentHealthPoints - damage, 0f, maxHealthPoints);
-            if (currentHealthPoints <= 0)
+            var enemyComponent = target.GetComponent<Enemy>();
+            if (Time.time - lastHitTime > weaponInHand.GetAttackRate())
             {
-                //Destroy(gameObject);
-                Debug.LogError("Player dead");
+                animator.SetTrigger("Attack"); // TODO Make const
+                enemyComponent.TakeDamage(playerDamage);
+                lastHitTime = Time.time;
             }
         }
-
-
     }
 }

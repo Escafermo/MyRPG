@@ -1,7 +1,6 @@
 using System;
 using UnityEngine;
 using UnityStandardAssets.Characters.ThirdPerson;
-using UnityStandardAssets.CrossPlatformInput;
 using UnityEngine.AI;
 using RPG.CameraUI; // TODO consider re-wiring;
 
