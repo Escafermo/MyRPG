@@ -41,8 +41,14 @@ namespace RPG.Characters
                     aiCharacter.SetTarget(enemy.transform);
                     break;
                 case walkCursorNumber:
-                    walkTarget.transform.position = raycastHit.point;
-                    aiCharacter.SetTarget(walkTarget.transform);
+                    if (Time.fixedTime > 12f) //Delay for waking up animation
+                    {
+                        walkTarget.transform.position = raycastHit.point;
+                        aiCharacter.SetTarget(walkTarget.transform);
+                    } else
+                    {
+                        return;
+                    }
                     break;
                 case buttonCursorNumber:
                     break;

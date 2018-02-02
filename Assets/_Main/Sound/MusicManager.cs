@@ -11,7 +11,7 @@ public class MusicManager : MonoBehaviour {
 
     private void Start()
     {
-        audioSource = GameObject.FindObjectOfType<AudioSource>();
+        audioSource = GetComponentInParent<AudioSource>();
     }
 
     private void OnTriggerEnter(Collider thisCollider)
