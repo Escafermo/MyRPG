@@ -19,6 +19,7 @@ namespace RPG.Characters
         [SerializeField] const int buttonCursorNumber = 5;
         [SerializeField] const int walkCursorNumber = 8;
         [SerializeField] const int targetCursorNumber = 9;
+        [SerializeField] float timeBeforeWalk;
 
         bool isInDirectMode = false; // Direct mode = keyboard or gamepad | Indirect mode = mouse
 
@@ -41,7 +42,7 @@ namespace RPG.Characters
                     aiCharacter.SetTarget(enemy.transform);
                     break;
                 case walkCursorNumber:
-                    if (Time.fixedTime > 12f) //Delay for waking up animation
+                    if (Time.fixedTime > timeBeforeWalk) //Delay for waking up animation
                     {
                         walkTarget.transform.position = raycastHit.point;
                         aiCharacter.SetTarget(walkTarget.transform);

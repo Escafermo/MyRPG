@@ -18,8 +18,8 @@ namespace RPG.Characters
         [SerializeField] float maxHealthPoints = 100f;
         [SerializeField] float playerDamage = 10f;
         
-        [SerializeField] Weapon.Weapons weaponInHand;
-        [SerializeField] AnimatorOverrideController animatorOverrideController;
+        [SerializeField] Weapon.Weapons weaponInHand = null;
+        [SerializeField] AnimatorOverrideController animatorOverrideController = null;
         Animator animator;
 
         [SerializeField] const int enemyLayerNumber = 9;

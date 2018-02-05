@@ -3,6 +3,7 @@ using UnityEngine.EventSystems;
 using System.Linq;
 using System.Collections.Generic;
 
+
 namespace RPG.CameraUI
 {
     public class CameraRaycaster : MonoBehaviour
@@ -21,6 +22,8 @@ namespace RPG.CameraUI
         public delegate void OnClickPriorityLayer(RaycastHit raycastHit, int layerHit); // declare new delegate type
         public event OnClickPriorityLayer notifyMouseClickObservers; // instantiate an observer set
 
+        public delegate void OnClickSpendEnergy(RaycastHit raycastHit, int layerHit); // declare new delegate type
+        public event OnClickSpendEnergy notifyEnergySpent; // instantiate an observer set
 
         void Update()
         {
@@ -52,7 +55,12 @@ namespace RPG.CameraUI
                 notifyMouseClickObservers(priorityHit.Value, layerHit);
             }
 
-            //print(stringToPrint);
+            // Notify delegates of second button mouse click for energy spenditure 
+            if (Input.GetMouseButtonDown(2))
+            {
+                notifyEnergySpent(priorityHit.Value, layerHit);
+            }
+
         }
 
         void NotifyObserersIfLayerChanged(int newLayer)

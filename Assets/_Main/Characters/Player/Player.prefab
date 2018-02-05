@@ -510,6 +510,7 @@ GameObject:
   - component: {fileID: 114804566680090282}
   - component: {fileID: 114467702488885010}
   - component: {fileID: 114055703099282058}
+  - component: {fileID: 114147571150850692}
   m_Layer: 10
   m_Name: Player
   m_TagString: Player
@@ -3661,7 +3662,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1175241564770038}
   m_LocalRotation: {x: -0, y: 0.033723563, z: -0, w: 0.99943125}
-  m_LocalPosition: {x: 215.25317, y: 0, z: 225.91003}
+  m_LocalPosition: {x: 215.41, y: 0, z: 226.64}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4866191451403108}
@@ -4634,9 +4635,23 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxHealthPoints: 50
   playerDamage: 2.5
-  weaponInHand: {fileID: 11400000, guid: 9490ffb064dec0f428c922b92bcf5ea6, type: 2}
+  weaponInHand: {fileID: 11400000, guid: dfc45f14b69aae04ca29f5bb77ea9395, type: 2}
   animatorOverrideController: {fileID: 22100000, guid: b3e8bd1406761eb489cf61ada8cc1ee3,
     type: 2}
+--- !u!114 &114147571150850692
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1175241564770038}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 14677838230ed734389476b4713a3b30, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  energyBar: {fileID: 0}
+  maxEnergytPoints: 100
+  energyPerHit: 10
 --- !u!114 &114290171594641936
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -4667,6 +4682,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5c0761f08651558419ba97ab6e6bead4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  timeBeforeWalk: 0
 --- !u!114 &114592458888594980
 MonoBehaviour:
   m_ObjectHideFlags: 1
