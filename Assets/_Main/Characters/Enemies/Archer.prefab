@@ -364,7 +364,7 @@ GameObject:
   m_Name: Arrows
   m_TagString: Untagged
   m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
+  m_NavMeshLayer: 1
   m_StaticEditorFlags: 0
   m_IsActive: 1
 --- !u!1 &1952572093719946
@@ -567,8 +567,8 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1815375545310522}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -83.18193, y: -14.997253, z: -18.324432}
+  m_LocalRotation: {x: -0, y: -0.50625587, z: -0, w: -0.86238337}
+  m_LocalPosition: {x: 206.04, y: 0, z: 137.27}
   m_LocalScale: {x: 1, y: 2, z: 1}
   m_Children:
   - {fileID: 4262674845154352}
@@ -577,7 +577,7 @@ Transform:
   - {fileID: 4167056533200552}
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: -299.171, z: 0}
 --- !u!4 &4699513218139078
 Transform:
   m_ObjectHideFlags: 1
@@ -803,7 +803,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxHealthPoints: 2.5
   damagePerShot: 0.75
-  moveToPlayerRadius: 2
+  moveToPlayerRadius: 20
   attackPlayerRadius: 35
   chasePlayerRadius: 35
   projectileToUse: {fileID: 1722717396795274, guid: 4cba53b5807ff0e4a84a8e0507ff8804,

@@ -25,7 +25,7 @@ GameObject:
   m_Name: BezierCurve
   m_TagString: Untagged
   m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
+  m_NavMeshLayer: 1
   m_StaticEditorFlags: 0
   m_IsActive: 1
 --- !u!1 &1059652941317790
@@ -42,7 +42,7 @@ GameObject:
   m_Name: BezierCurve
   m_TagString: Untagged
   m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
+  m_NavMeshLayer: 1
   m_StaticEditorFlags: 0
   m_IsActive: 1
 --- !u!1 &1069650761941084
@@ -75,7 +75,7 @@ GameObject:
   m_Name: BezierCurve
   m_TagString: Untagged
   m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
+  m_NavMeshLayer: 1
   m_StaticEditorFlags: 0
   m_IsActive: 1
 --- !u!1 &1078888692540604
@@ -92,7 +92,7 @@ GameObject:
   m_Name: BezierCurve
   m_TagString: Untagged
   m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
+  m_NavMeshLayer: 1
   m_StaticEditorFlags: 0
   m_IsActive: 1
 --- !u!1 &1084122986350914
@@ -189,7 +189,7 @@ GameObject:
   m_Name: BezierCurve
   m_TagString: Untagged
   m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
+  m_NavMeshLayer: 1
   m_StaticEditorFlags: 0
   m_IsActive: 1
 --- !u!1 &1218537374236798
@@ -206,7 +206,7 @@ GameObject:
   m_Name: Chimney
   m_TagString: Untagged
   m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
+  m_NavMeshLayer: 1
   m_StaticEditorFlags: 0
   m_IsActive: 1
 --- !u!1 &1232416845578848
@@ -239,7 +239,7 @@ GameObject:
   m_Name: Front_Roof
   m_TagString: Untagged
   m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
+  m_NavMeshLayer: 1
   m_StaticEditorFlags: 0
   m_IsActive: 1
 --- !u!1 &1250074782749652
@@ -289,7 +289,7 @@ GameObject:
   m_Name: BezierCurve
   m_TagString: Untagged
   m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
+  m_NavMeshLayer: 1
   m_StaticEditorFlags: 0
   m_IsActive: 1
 --- !u!1 &1281348595404586
@@ -306,7 +306,7 @@ GameObject:
   m_Name: BezierCurve
   m_TagString: Untagged
   m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
+  m_NavMeshLayer: 1
   m_StaticEditorFlags: 0
   m_IsActive: 1
 --- !u!1 &1309106096502674
@@ -339,7 +339,7 @@ GameObject:
   m_Name: BezierCurve
   m_TagString: Untagged
   m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
+  m_NavMeshLayer: 1
   m_StaticEditorFlags: 0
   m_IsActive: 1
 --- !u!1 &1317797220988676
@@ -356,7 +356,7 @@ GameObject:
   m_Name: BezierCurve
   m_TagString: Untagged
   m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
+  m_NavMeshLayer: 1
   m_StaticEditorFlags: 0
   m_IsActive: 1
 --- !u!1 &1352887477327700
@@ -373,7 +373,7 @@ GameObject:
   m_Name: BezierCurve
   m_TagString: Untagged
   m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
+  m_NavMeshLayer: 1
   m_StaticEditorFlags: 0
   m_IsActive: 1
 --- !u!1 &1354548229515560
@@ -390,7 +390,7 @@ GameObject:
   m_Name: Back_wall
   m_TagString: Untagged
   m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
+  m_NavMeshLayer: 1
   m_StaticEditorFlags: 0
   m_IsActive: 1
 --- !u!1 &1357260670656830
@@ -423,7 +423,7 @@ GameObject:
   m_Name: BezierCurve
   m_TagString: Untagged
   m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
+  m_NavMeshLayer: 1
   m_StaticEditorFlags: 0
   m_IsActive: 1
 --- !u!1 &1426016217428554
@@ -440,7 +440,7 @@ GameObject:
   m_Name: Main_Roof
   m_TagString: Untagged
   m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
+  m_NavMeshLayer: 1
   m_StaticEditorFlags: 0
   m_IsActive: 1
 --- !u!1 &1492764111027670
@@ -488,7 +488,7 @@ GameObject:
   m_Name: BezierCurve
   m_TagString: Untagged
   m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
+  m_NavMeshLayer: 1
   m_StaticEditorFlags: 0
   m_IsActive: 1
 --- !u!1 &1564675817065200
@@ -539,7 +539,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 40
   m_IsActive: 1
 --- !u!1 &1714336095307954
 GameObject:
@@ -571,7 +571,7 @@ GameObject:
   m_Name: BezierCurve
   m_TagString: Untagged
   m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
+  m_NavMeshLayer: 1
   m_StaticEditorFlags: 0
   m_IsActive: 1
 --- !u!1 &1774127309887978
@@ -652,7 +652,7 @@ GameObject:
   m_Name: BezierCurve
   m_TagString: Untagged
   m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
+  m_NavMeshLayer: 1
   m_StaticEditorFlags: 0
   m_IsActive: 1
 --- !u!1 &1874206701510446
@@ -685,7 +685,7 @@ GameObject:
   m_Name: BezierCurve
   m_TagString: Untagged
   m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
+  m_NavMeshLayer: 1
   m_StaticEditorFlags: 0
   m_IsActive: 1
 --- !u!1 &1928056858239156
@@ -718,7 +718,7 @@ GameObject:
   m_Name: BezierCurve
   m_TagString: Untagged
   m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
+  m_NavMeshLayer: 1
   m_StaticEditorFlags: 0
   m_IsActive: 1
 --- !u!4 &4003233876964490
@@ -854,15 +854,15 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1110759614231186}
-  m_LocalRotation: {x: -0, y: 0.97450536, z: -0, w: 0.22436412}
-  m_LocalPosition: {x: 178.4, y: -15, z: 101.99}
+  m_LocalRotation: {x: -0, y: -0.27965426, z: -0, w: 0.9601008}
+  m_LocalPosition: {x: 111.461105, y: -15, z: 79.25029}
   m_LocalScale: {x: 1.5, y: 1.5, z: 1.5}
   m_Children:
   - {fileID: 4870495072318264}
   - {fileID: 4146415264155792}
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 154.069, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: -32.479, z: 0}
 --- !u!4 &4183724638763762
 Transform:
   m_ObjectHideFlags: 1
