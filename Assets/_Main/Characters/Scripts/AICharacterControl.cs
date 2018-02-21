@@ -2,7 +2,7 @@ using System;
 using UnityEngine;
 
 // TODO change to RPG.Characters namespace
-namespace UnityStandardAssets.Characters.ThirdPerson
+namespace RPG.Characters
 {
     [RequireComponent(typeof (UnityEngine.AI.NavMeshAgent))]
     [RequireComponent(typeof (ThirdPersonCharacter))]
@@ -11,7 +11,6 @@ namespace UnityStandardAssets.Characters.ThirdPerson
         public UnityEngine.AI.NavMeshAgent agent { get; private set; }             // the navmesh agent required for the path finding
         public ThirdPersonCharacter character { get; private set; } // the character we are controlling
         public Transform target;                                    // target to aim for
-
 
         private void Start()
         {
@@ -27,12 +26,21 @@ namespace UnityStandardAssets.Characters.ThirdPerson
         private void Update()
         {
             if (target != null)
+            {
                 agent.SetDestination(target.position);
-
+            }
             if (agent.remainingDistance > agent.stoppingDistance)
+            { 
                 character.Move(agent.desiredVelocity, false, false);
+            }
             else
+            {
+                if (GetComponent<Enemy>())
+                {
+                    agent.velocity = Vector3.zero;
+                }
                 character.Move(Vector3.zero, false, false);
+            }
         }
 
 

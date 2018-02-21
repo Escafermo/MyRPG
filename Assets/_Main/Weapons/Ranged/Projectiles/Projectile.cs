@@ -7,6 +7,8 @@ namespace RPG.Weapon
 {
     public class Projectile : MonoBehaviour
     {
+        // TODO PROJECTILES LOSE PROPERTIES WHEN ENEMY DIES ->> SHOULD INCREASE SPEED AND ADD FIRE_RATE
+
 
         [SerializeField] float projectileSpeed;
         [SerializeField] GameObject projectileShooter;

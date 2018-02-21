@@ -1,36 +1,50 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
-
-using RPG.CameraUI;
 
 namespace RPG.Characters
 {
 	public class Energy : MonoBehaviour 
 	{
         [SerializeField] RawImage energyBar;
-        [SerializeField] float maxEnergytPoints = 100f;
-        [SerializeField] float energyPerHit;
+        [SerializeField] float maxEnergyPoints = 100f;
+        [SerializeField] float energyRecoverPerSecond = 1f;
 
         float currentEnergyPoints;
 
-        CameraRaycaster cameraRaycaster = null;
-
         void Start ()
         {
-            currentEnergyPoints = maxEnergytPoints;
-            cameraRaycaster = Camera.main.GetComponent<CameraRaycaster>();
-            cameraRaycaster.notifyEnergySpent += OnMiddleMouseClick;
+            currentEnergyPoints = maxEnergyPoints;
         }
 
-        void OnMiddleMouseClick(RaycastHit raycastHit, int layerHit)
+        private void Update()
         {
-            float newEnergyPoints = currentEnergyPoints - energyPerHit;
-            currentEnergyPoints = Mathf.Clamp(newEnergyPoints, 0f, maxEnergytPoints);
+            if (currentEnergyPoints < maxEnergyPoints)
+            {
+                RecoverEnergy();
+                UpdateEnergyBar();
+            }
+        }
+
+        public void RecoverEnergy()
+        {
+            var pointsToAdd = energyRecoverPerSecond * Time.deltaTime;
+            currentEnergyPoints = Mathf.Clamp(currentEnergyPoints + pointsToAdd, 0, maxEnergyPoints);
+        }
+
+        public bool IsEnergyAvailable(float amount)
+        {
+            return amount <= currentEnergyPoints;
+        }
+
+        public void ConsumeEnergy (float amount)
+        {
+            float newEnergyPoints = currentEnergyPoints - amount;
+            currentEnergyPoints = Mathf.Clamp(newEnergyPoints, 0f, maxEnergyPoints);
+
             UpdateEnergyBar();
         }
-
+        
+        // TODO remove magic numbers below
         private void UpdateEnergyBar()
         {
             float xValue = -(energyAsPercentage / 2f) - 0.5f;
@@ -41,7 +55,7 @@ namespace RPG.Characters
         {
             get
             {
-                return currentEnergyPoints / (float)maxEnergytPoints;
+                return currentEnergyPoints / (float)maxEnergyPoints;
             }
         }
 

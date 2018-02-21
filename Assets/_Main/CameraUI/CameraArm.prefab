@@ -39,7 +39,6 @@ GameObject:
   - component: {fileID: 124712390817118272}
   - component: {fileID: 81688604113495102}
   - component: {fileID: 114478461002061390}
-  - component: {fileID: 114632867855328208}
   - component: {fileID: 45434668834886386}
   m_Layer: 0
   m_Name: Main Camera
@@ -118,7 +117,7 @@ Skybox:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1338011394862832}
   m_Enabled: 1
-  m_CustomSkybox: {fileID: 2100000, guid: 279b9a6b3e33f8b4b990d36ec7613100, type: 2}
+  m_CustomSkybox: {fileID: 2100000, guid: 5d722615a7318fa49a3e523cdfb6fc6f, type: 2}
 --- !u!81 &81688604113495102
 AudioListener:
   m_ObjectHideFlags: 1
@@ -138,22 +137,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   layerPriorities: 0900000008000000
---- !u!114 &114632867855328208
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1338011394862832}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9f83d710eebbbca438a7ce04015996df, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  walkCursor: {fileID: 2800000, guid: 5232dff125d2a477abda5091702a1a15, type: 3}
-  unknownCursor: {fileID: 2800000, guid: f583eee83e4fa44ca9ae7aad88224fc5, type: 3}
-  targetCursor: {fileID: 2800000, guid: 9b582cc5a05de4a6b828c8e72df8fc39, type: 3}
-  buttonCursor: {fileID: 2800000, guid: b2aa98cd561424a8681ab320dbc7c67e, type: 3}
   cursorHotspot: {x: 0, y: 0}
+  walkCursor: {fileID: 2800000, guid: 5232dff125d2a477abda5091702a1a15, type: 3}
+  enemyCursor: {fileID: 2800000, guid: 9b582cc5a05de4a6b828c8e72df8fc39, type: 3}
 --- !u!114 &114970944185331108
 MonoBehaviour:
   m_ObjectHideFlags: 1
