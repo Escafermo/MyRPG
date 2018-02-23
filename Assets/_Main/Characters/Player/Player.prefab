@@ -507,6 +507,7 @@ GameObject:
   - component: {fileID: 136675433673370932}
   - component: {fileID: 114290171594641936}
   - component: {fileID: 195086937861119852}
+  - component: {fileID: 82369439904143194}
   - component: {fileID: 114804566680090282}
   - component: {fileID: 114467702488885010}
   - component: {fileID: 114055703099282058}
@@ -4605,6 +4606,86 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 1
+--- !u!82 &82369439904143194
+AudioSource:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1175241564770038}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 0}
+  m_PlayOnAwake: 0
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 2
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    - serializedVersion: 2
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 2
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 0
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 2
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 0
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 2
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 0
 --- !u!95 &95794913441723358
 Animator:
   serializedVersion: 3
@@ -4633,13 +4714,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 708cc594683296742b023c5b4114f2d0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealthPoints: 50
+  maxHealthPoints: 5
   playerBaseDamage: 10
   weaponInHand: {fileID: 11400000, guid: dfc45f14b69aae04ca29f5bb77ea9395, type: 2}
   animatorOverrideController: {fileID: 22100000, guid: b3e8bd1406761eb489cf61ada8cc1ee3,
     type: 2}
   abilities:
   - {fileID: 11400000, guid: 7fd75703fea0e4043a3b1f449146a059, type: 2}
+  - {fileID: 11400000, guid: 50b22a18f6e7fde448783829303b5f7d, type: 2}
+  arrayOfHitClips:
+  - {fileID: 8300000, guid: 5d21f79658b98d641961b4e392967bc4, type: 3}
+  - {fileID: 8300000, guid: e49e0d010f556644fb2ffae16cb9c890, type: 3}
+  - {fileID: 8300000, guid: 53ae220fba0faac4a84398486f8a94c6, type: 3}
+  - {fileID: 8300000, guid: 6ebe9730bc7e8bf4db36101440aa50ca, type: 3}
+  - {fileID: 8300000, guid: ca58c4ff8d7496642ba86395906216fb, type: 3}
+  arrayOfDeathClips:
+  - {fileID: 8300000, guid: 77335a133f2e7484f84bcaf0e1ee5c2e, type: 3}
+  - {fileID: 8300000, guid: ed99a8664c0615245ae0199fd4106063, type: 3}
+  - {fileID: 8300000, guid: 6985756d881517540b48f377c4fe4760, type: 3}
 --- !u!114 &114147571150850692
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -4651,9 +4743,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 14677838230ed734389476b4713a3b30, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  energyBar: {fileID: 0}
+  energyImage: {fileID: 0}
   maxEnergyPoints: 100
-  energyRecoverPerSecond: 1
+  energyRecoverPerSecond: 5
 --- !u!114 &114290171594641936
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -4717,7 +4809,7 @@ CapsuleCollider:
   m_Material: {fileID: 13400000, guid: 01571ba68fb2dad46aa03094ab219579, type: 2}
   m_IsTrigger: 0
   m_Enabled: 1
-  m_Radius: 0.3
+  m_Radius: 0.2
   m_Height: 1.6
   m_Direction: 1
   m_Center: {x: 0, y: 0.8, z: 0}
@@ -5313,9 +5405,9 @@ NavMeshAgent:
   m_GameObject: {fileID: 1175241564770038}
   m_Enabled: 1
   m_AgentTypeID: 0
-  m_Radius: 0.5
+  m_Radius: 0.1
   m_Speed: 5
-  m_Acceleration: 5
+  m_Acceleration: 10
   avoidancePriority: 50
   m_AngularSpeed: 12
   m_StoppingDistance: 1.3

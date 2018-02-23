@@ -1,9 +1,10 @@
 ﻿//using System;
-//using System.Collections;
+using System.Collections;
 //using System.Collections.Generic;
 using UnityEngine;
 //using UnityStandardAssets.Characters.ThirdPerson;
 using UnityEngine.Assertions;
+using UnityEngine.SceneManagement;
 
 // TODO consider re-wiring:
 using RPG.CameraUI;
@@ -15,6 +16,8 @@ namespace RPG.Characters
 {
     public class Player : MonoBehaviour, IDamageable
     {
+        const string DEATH_TRIGGER = "Death";
+        const string ATTACK_TRIGGER = "Attack";
 
         [SerializeField] float maxHealthPoints = 100f;
         [SerializeField] float playerBaseDamage = 10f;
@@ -28,8 +31,12 @@ namespace RPG.Characters
 
         private float currentHealthPoints;
         private float lastHitTime = 0f;
+        private AudioSource audioSource;
 
         CameraRaycaster cameraRaycaster = null;
+
+        [SerializeField] AudioClip[] arrayOfHitClips;
+        [SerializeField] AudioClip[] arrayOfDeathClips;
 
         void Start()
         {
@@ -38,16 +45,36 @@ namespace RPG.Characters
             PutWeaponInHand();
             OverrideAnimatorController();
             abilities[0].AttachComponent(gameObject);
+            audioSource = GetComponent<AudioSource>();
         }
 
         public void TakeDamage(float damage)
         {
-            currentHealthPoints = Mathf.Clamp(currentHealthPoints - damage, 0f, maxHealthPoints);
-            if (currentHealthPoints <= 0)
+            bool playerDies = (currentHealthPoints - damage <= 0); // Must ask before Reducing Health
+            ReduceHealth(damage);
+            if (damage > 0) // Stop hit sound when heal - TODO find better solution
             {
-                //Destroy(gameObject);
-                //Debug.LogError("Player dead");
+                PlayRandomHitSound();
             }
+            if (playerDies) 
+            {
+               StartCoroutine(KilllPlayer());
+            }
+        }
+
+        IEnumerator KilllPlayer()
+        {
+              animator.SetTrigger(DEATH_TRIGGER);
+
+              PlayRandomDeathSound();
+              yield return new WaitForSecondsRealtime(audioSource.clip.length + 2f);
+
+              SceneManager.LoadScene(0);
+        }
+
+        private void ReduceHealth(float damage)
+        {
+            currentHealthPoints = Mathf.Clamp(currentHealthPoints - damage, 0f, maxHealthPoints);
         }
 
         public float healthAsPercentage
@@ -132,10 +159,22 @@ namespace RPG.Characters
         {
             if (Time.time - lastHitTime > weaponInHand.GetAttackRate())
             {
-                animator.SetTrigger("Attack"); // TODO Make const
+                animator.SetTrigger(ATTACK_TRIGGER);
                 enemy.TakeDamage(playerBaseDamage);
                 lastHitTime = Time.time;
             }
+        }
+
+        private void PlayRandomHitSound()
+        {
+            audioSource.clip = arrayOfHitClips[UnityEngine.Random.Range(0, 5)];
+            audioSource.Play();
+        }
+
+        private void PlayRandomDeathSound()
+        {
+            audioSource.clip = arrayOfDeathClips[UnityEngine.Random.Range(0, 3)];
+            audioSource.Play();
         }
     }
 }

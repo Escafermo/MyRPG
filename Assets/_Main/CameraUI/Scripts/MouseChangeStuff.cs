@@ -19,77 +19,63 @@ namespace RPG.CameraUI
         float rotationXAxis = 0.0f;
         float velocityX = 0.0f;
         float velocityY = 0.0f;
+
+        float zoomValue = 0f;
+        float zoomVelocity = 0f;
+        float small = 0.5f;
+        float minCameraDist = 4f;
+        float maxCameraDist = 7f;
         private Vector3 localCameraPosition;
 
-        [SerializeField] float yZoomInMax;
-        [SerializeField] float yZoomOutMax;
-        [SerializeField] float translationValue;
-
-        // Use this for initialization
         void Start()
         {
-            localCameraPosition = new Vector3(0, 5f, 6f);
+            localCameraPosition = new Vector3(0, 5f, 5f);
+          
 
             Vector3 angles = transform.eulerAngles;
             rotationYAxis = angles.y;
             rotationXAxis = angles.x;
-            // Make the rigid body not change rotation
+ 
             if (GetComponent<Rigidbody>())
             {
                 GetComponent<Rigidbody>().freezeRotation = true;
             }
         }
+
         void LateUpdate()
         {
             if (target)
             {
-                if (Input.GetMouseButton(1))
-                {
-                    velocityX += xSpeed * Input.GetAxis("Mouse X") * distance * 0.02f;
-                    velocityY += ySpeed * Input.GetAxis("Mouse Y") * 0.02f;
-                }
-                rotationYAxis += velocityX;
-                rotationXAxis -= velocityY;
-                rotationXAxis = ClampAngle(rotationXAxis, yMinLimit, yMaxLimit);
-                //Quaternion fromRotation = Quaternion.Euler(transform.rotation.eulerAngles.x, transform.rotation.eulerAngles.y, 0);
-                Quaternion toRotation = Quaternion.Euler(-rotationXAxis, rotationYAxis, 0);
-                Quaternion rotation = toRotation;
-
-                //distance = Mathf.Clamp(distance - Input.GetAxis("Mouse ScrollWheel") * 5, distanceMin, distanceMax);
-                //RaycastHit hit;
-                //if (Physics.Linecast(target.position, transform.position, out hit))
-                //{
-                //distance -= hit.distance;
-                //}
-                //Vector3 negDistance = new Vector3(0.0f, 0.0f, -distance);
-                //Vector3 position = rotation * negDistance + target.position;
-
-                transform.rotation = rotation;
-                //transform.position = position;
-                velocityX = Mathf.Lerp(velocityX, 0, Time.deltaTime * smoothTime);
-                velocityY = Mathf.Lerp(velocityY, 0, Time.deltaTime * smoothTime);
-
-                transform.position = target.transform.position;
+                MoveCameraAroundPlayer();
             }
 
-            // Handles zooming:
-            Vector3 zoomOut = new Vector3(0, translationValue, translationValue);
-            Vector3 zoomIn = new Vector3(0, -translationValue, -translationValue);
-            transform.GetComponentInChildren<Camera>().transform.localPosition = localCameraPosition;
-
-            //Zoom out
-            if (Input.GetAxis("Mouse ScrollWheel") < 0 && localCameraPosition.y < yZoomOutMax)
-            {
-                localCameraPosition += zoomOut;
-            }
-            //Zoom in
-            if (Input.GetAxis("Mouse ScrollWheel") > 0 && localCameraPosition.y > yZoomInMax)
-            {
-                localCameraPosition += zoomIn;
-            }
+            HandleZoom();
 
         }
-        public static float ClampAngle(float angle, float min, float max)
+
+        private void MoveCameraAroundPlayer()
+        {
+            if (Input.GetMouseButton(1))
+            {
+                velocityX += xSpeed * Input.GetAxis("Mouse X") * distance * 0.02f;
+                velocityY += ySpeed * Input.GetAxis("Mouse Y") * distance * 0.02f;
+            }
+            rotationYAxis += velocityX;
+            rotationXAxis -= velocityY;
+            rotationXAxis = ClampAngle(rotationXAxis, yMinLimit, yMaxLimit);
+
+            Quaternion toRotation = Quaternion.Euler(-rotationXAxis, rotationYAxis, 0);
+            Quaternion rotation = toRotation;
+
+            transform.rotation = rotation;
+
+            velocityX = Mathf.Lerp(velocityX, 0, Time.deltaTime * smoothTime);
+            velocityY = Mathf.Lerp(velocityY, 0, Time.deltaTime * smoothTime);
+
+            transform.position = target.transform.position;
+        }
+
+        private static float ClampAngle(float angle, float min, float max)
         {
             if (angle < -360F)
                 angle += 360F;
@@ -97,5 +83,41 @@ namespace RPG.CameraUI
                 angle -= 360F;
             return Mathf.Clamp(angle, min, max);
         }
+
+        private void HandleZoom()
+        {
+            transform.GetComponentInChildren<Camera>().transform.localPosition = localCameraPosition;
+
+            if (Input.GetAxis("Mouse ScrollWheel") != 0 && IsLocalPositionOk())
+            {
+                zoomVelocity += Input.GetAxis("Mouse ScrollWheel") * small;
+            }
+            else if (IsLocalPositionToZeroZoomValue()) // If passed limits
+            {
+                zoomValue = 0f;
+            }
+            zoomValue += zoomVelocity;
+            localCameraPosition -= new Vector3(0, zoomValue, zoomValue);
+            ClampAndLerpZoom();
+        }
+        
+        private void ClampAndLerpZoom()
+        {
+            localCameraPosition.y = Mathf.Clamp(localCameraPosition.y, minCameraDist, maxCameraDist);
+            localCameraPosition.z = Mathf.Clamp(localCameraPosition.z, minCameraDist, maxCameraDist);
+            zoomValue = Mathf.Lerp(zoomValue, 0, Time.deltaTime * 2f);
+            zoomVelocity = Mathf.Lerp(zoomVelocity, 0, Time.deltaTime * 500f);
+        }
+
+        private bool IsLocalPositionOk()
+        {
+            return localCameraPosition.y >= minCameraDist && localCameraPosition.y <= maxCameraDist && localCameraPosition.z >= minCameraDist && localCameraPosition.z <= maxCameraDist;
+        }
+
+        private bool IsLocalPositionToZeroZoomValue()
+        {
+            return localCameraPosition.y <= minCameraDist || localCameraPosition.y >= maxCameraDist || localCameraPosition.z <= minCameraDist || localCameraPosition.z >= maxCameraDist;
+        }
+
     }
 }

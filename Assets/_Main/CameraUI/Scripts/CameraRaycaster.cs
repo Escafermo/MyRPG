@@ -8,24 +8,21 @@ namespace RPG.CameraUI
 {
     public class CameraRaycaster : MonoBehaviour
     {
-        // TODO AUDIO TRIGGER COLLIDER IS STOPPING ATTACKS
-
         const int WALKABLE_LAYER_NUMBER = 8;
 
         [SerializeField] Vector2 cursorHotspot = new Vector2(0, 0);
-
         [SerializeField] Texture2D walkCursor = null;
         [SerializeField] Texture2D enemyCursor = null;
 
-        //[SerializeField] string stringToPrint = "aa";
-
         float maxRaycastDepth = 1000f; // Hard coded value
+
+        // Defining screen size to fix mouse hover bug
+        Rect currentScreenRect; // TODO move inside update if want to support changing screen size
 
         // TODO remove below
         int topPriorityLayerLastFrame = -1; // So get ? from start with Default layer terrain
 
         // Setup delegates for broadcasting layer changes to other classes
-
         public delegate void OnMouseOverDestination(Vector3 destination);
         public event OnMouseOverDestination notifyNewDestinationObservers;
 
@@ -34,6 +31,7 @@ namespace RPG.CameraUI
 
         void Update()
         {
+            currentScreenRect = new Rect(0, 0, Screen.width, Screen.height);
             // Check if pointer is over an interactable UI element
             //if (EventSystem.current.IsPointerOverGameObject())
             //{
@@ -48,11 +46,14 @@ namespace RPG.CameraUI
 
         void PerformRayCast()
         {
-            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            if (currentScreenRect.Contains(Input.mousePosition))
+            {
+                Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 
-            //Specify layer priorities ->> ORDER OF CALL MATTERS
-            if (RayCastForEnemy(ray)) { return; }
-            if (RayCastForWalkable(ray)) { return; }
+                //Specify layer priorities ->> ORDER OF CALL MATTERS
+                if (RayCastForEnemy(ray)) { return; }
+                if (RayCastForWalkable(ray)) { return; }
+            }
         }
 
         private bool RayCastForEnemy(Ray ray)
