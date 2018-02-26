@@ -6,7 +6,7 @@ namespace RPG.CameraUI
 {
 	public class Sun : MonoBehaviour 
 	{
-        float timeScale = 3.6f; // Needs to be 3.6
+        float timeScale = 0.36f; // Needs to be 0.36
 	
 		void Update ()
         {

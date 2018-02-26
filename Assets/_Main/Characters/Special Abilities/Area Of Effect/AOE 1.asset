@@ -12,5 +12,8 @@ MonoBehaviour:
   m_Name: AOE 1
   m_EditorClassIdentifier: 
   energyCost: 50
+  particleSystem: {fileID: 1721295604539400, guid: 0634ea42662275e40afb6c8c740bef99,
+    type: 2}
+  audioClip: {fileID: 8300000, guid: e1edc8c755b15c0418724a623893e340, type: 3}
   radius: 10
   damageToEachTarget: 100

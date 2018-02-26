@@ -22,7 +22,7 @@ namespace RPG.Characters
 
         [SerializeField] float maxHealthPoints = 100f;
         [SerializeField] float playerBaseDamage = 10f;
-        
+
         [SerializeField] Weapon.Weapons weaponInHand = null;
         [SerializeField] AnimatorOverrideController animatorOverrideController = null;
         Animator animator;
@@ -39,29 +39,67 @@ namespace RPG.Characters
         [SerializeField] AudioClip[] arrayOfHitClips;
         [SerializeField] AudioClip[] arrayOfDeathClips;
 
+        Enemy enemy = null;
+
         void Start()
         {
+            audioSource = GetComponent<AudioSource>();
+
             RegisterForMouseClick();
             GetMaxHealth();
             PutWeaponInHand();
             OverrideAnimatorController();
-            abilities[0].AttachComponent(gameObject);
-            audioSource = GetComponent<AudioSource>();
+            AttachAbilities();
         }
 
-        public void TakeDamage(float damage)
+        void Update()
         {
-            bool playerDies = (currentHealthPoints - damage <= 0); // Must ask before Reducing Health
-            ReduceHealth(damage);
-            if (damage > 0 ) // Stop hit sound when heal - TODO find better solution
+            if (healthAsPercentage > Mathf.Epsilon)
+            {
+                ScanForAbilityKeyPress();
+            }
+
+
+        }
+
+        private void AttachAbilities()
+        {
+            for (int i = 0; i < abilities.Length; i++)
+            {
+                abilities[i].AttachComponent(gameObject);
+            }
+        }
+
+        private void ScanForAbilityKeyPress()
+        {
+            for (int i = 0; i < abilities.Length; i++)
+            {
+                string j = (i + 1).ToString(); // Array starts at 0, button starts at 1
+                if (Input.GetKeyDown(j))
+                {
+                    AttemptSpecialAbility(i);
+                }
+            }
+        }
+
+        public void TakeDamage(float damageAmount)
+        {
+            bool playerDies = (currentHealthPoints - damageAmount <= 0); // Must ask before Reducing Health
+            ReduceHealth(damageAmount);
+            if (damageAmount > 0) // Stop hit sound when heal - TODO find better solution
             {
                 animator.SetTrigger(HIT_TRIGGER);
                 PlayRandomHitSound();
             }
-            if (playerDies) 
+            if (playerDies)
             {
-               StartCoroutine(KilllPlayer());
+                StartCoroutine(KilllPlayer());
             }
+        }
+
+        public void Heal(float healAmount)
+        {
+            currentHealthPoints = Mathf.Clamp(currentHealthPoints + healAmount, 0f, maxHealthPoints);
         }
 
         IEnumerator KilllPlayer()
@@ -98,20 +136,23 @@ namespace RPG.Characters
             cameraRaycaster.notifyNewEnemyObservers += FindNewEnemy;
         }
 
-        void FindNewEnemy(Enemy enemy)
+        void FindNewEnemy(Enemy currentEnemy)
         {
+            this.enemy = currentEnemy;
+
             if (Input.GetMouseButton(0) && IsEnemyInRange(enemy))
             {
-                AttackEnemy(enemy);
+                AttackEnemy();
             }
-            else if (Input.GetMouseButtonDown(2) && IsEnemyInRange(enemy))
+            else if (Input.GetMouseButtonDown(2))
             {
-                AttemptSpecialAbility(0,enemy);   
+                AttemptSpecialAbility(0);   
             }
+            
 
         }
 
-        private void AttemptSpecialAbility(int abilityIndex , Enemy enemy)
+        private void AttemptSpecialAbility(int abilityIndex)
         {
             var energyComponent = GetComponent<Energy>();
             var energyCost = abilities[abilityIndex].GetEnergyCost();
@@ -123,6 +164,18 @@ namespace RPG.Characters
                 abilities[abilityIndex].Use(abilityParameters);
             }
         }
+
+        //private void AttemptSelfSpecialAbility(int abilityIndex, Player player)
+        //{
+        //    var energyComponent = GetComponent<Energy>();
+        //    var energyCost = abilities[abilityIndex].GetEnergyCost();
+        //    if (energyComponent.IsEnergyAvailable(energyCost))
+        //    {
+        //        energyComponent.ConsumeEnergy(energyCost);
+        //        var abilityParameters = new SelfAbilityUseParameters(player, 10f);
+        //    }
+
+        //}
 
         private void OverrideAnimatorController()
         {
@@ -157,7 +210,7 @@ namespace RPG.Characters
             return distanceToEnemy <= weaponInHand.GetAttackRange();
         }
 
-        private void AttackEnemy(Enemy enemy)
+        private void AttackEnemy()
         {
             if (Time.time - lastHitTime > weaponInHand.GetAttackRate())
             {

@@ -6,8 +6,9 @@ namespace RPG.CameraUI
 {
     public class DayNightCycle : MonoBehaviour
     {
+        float timeScale = 0.001f; // Needs to be 0.001f
+
         [Tooltip("Number of minutes per second")]
-        float timeScale = 0.01f; // Needs to be 0.01f
         [SerializeField] GameObject skydome;
         float pos;
         float thisSky = 0f;

@@ -6,6 +6,8 @@ namespace RPG.CameraUI
 {
     public class MouseChangeStuff : MonoBehaviour
     {
+        // Handles ZOOM and PAN
+
         public Transform target;
         public float distance = 2.0f;
         public float xSpeed = 20.0f;
@@ -23,13 +25,15 @@ namespace RPG.CameraUI
         float zoomValue = 0f;
         float zoomVelocity = 0f;
         float small = 0.5f;
-        float minCameraDist = 3f;
-        float maxCameraDist = 10f;
+        float minCameraDistY = 4f;
+        float maxCameraDistY = 10f;
+        float minCameraDistZ = 5.5f;
+        float maxCameraDistZ = 11.5f;
         private Vector3 localCameraPosition;
 
         void Start()
         {
-            localCameraPosition = new Vector3(0, 5f, 5f);
+            localCameraPosition = new Vector3(0, 4f, 5.5f);
           
 
             Vector3 angles = transform.eulerAngles;
@@ -103,20 +107,20 @@ namespace RPG.CameraUI
         
         private void ClampAndLerpZoom()
         {
-            localCameraPosition.y = Mathf.Clamp(localCameraPosition.y, minCameraDist, maxCameraDist);
-            localCameraPosition.z = Mathf.Clamp(localCameraPosition.z, minCameraDist, maxCameraDist);
+            localCameraPosition.y = Mathf.Clamp(localCameraPosition.y, minCameraDistY, maxCameraDistY);
+            localCameraPosition.z = Mathf.Clamp(localCameraPosition.z, minCameraDistZ, maxCameraDistZ);
             zoomValue = Mathf.Lerp(zoomValue, 0, Time.deltaTime * 2f);
             zoomVelocity = Mathf.Lerp(zoomVelocity, 0, Time.deltaTime * 500f);
         }
 
         private bool IsLocalPositionOk()
         {
-            return localCameraPosition.y >= minCameraDist && localCameraPosition.y <= maxCameraDist && localCameraPosition.z >= minCameraDist && localCameraPosition.z <= maxCameraDist;
+            return localCameraPosition.y >= minCameraDistY && localCameraPosition.y <= maxCameraDistY && localCameraPosition.z >= minCameraDistZ && localCameraPosition.z <= maxCameraDistZ;
         }
 
         private bool IsLocalPositionToZeroZoomValue()
         {
-            return localCameraPosition.y <= minCameraDist || localCameraPosition.y >= maxCameraDist || localCameraPosition.z <= minCameraDist || localCameraPosition.z >= maxCameraDist;
+            return localCameraPosition.y <= minCameraDistY || localCameraPosition.y >= maxCameraDistY || localCameraPosition.z <= minCameraDistZ || localCameraPosition.z >= maxCameraDistZ;
         }
 
     }

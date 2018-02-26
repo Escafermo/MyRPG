@@ -12,4 +12,7 @@ MonoBehaviour:
   m_Name: Power Attack 1
   m_EditorClassIdentifier: 
   energyCost: 25
+  particleSystem: {fileID: 1691421729971184, guid: cb0f374995cce254ab51af5dd3e64dc4,
+    type: 2}
+  audioClip: {fileID: 8300000, guid: 67e487a580f1a2d4db72e2f76e3e38a1, type: 3}
   extraDamage: 100
