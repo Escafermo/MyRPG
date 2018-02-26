@@ -809,7 +809,8 @@ MonoBehaviour:
   projectileToUse: {fileID: 1722717396795274, guid: 4cba53b5807ff0e4a84a8e0507ff8804,
     type: 2}
   projectileSpawnSocket: {fileID: 1778843984622378}
-  projectileFrequency: 0.75
+  projectileFrequency: 1
+  projectileFrequencyVariation: 0.1
   verticalAimOffset: {x: 0, y: 1, z: 0}
 --- !u!114 &114226701233290662
 MonoBehaviour:

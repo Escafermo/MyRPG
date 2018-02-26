@@ -6,18 +6,39 @@ namespace RPG.CameraUI
 {
     public class DayNightCycle : MonoBehaviour
     {
-
         [Tooltip("Number of minutes per second")]
-        [SerializeField]
-        float timeScale;
+        float timeScale = 0.01f; // Needs to be 0.01f
+        [SerializeField] GameObject skydome;
+        float pos;
+        float thisSky = 0f;
+        Vector2 vector;
+        float time;
+
+        void Start()
+        {
+            skydome.GetComponent<Renderer>().material.SetTextureOffset("_MainTex", new Vector2(thisSky, 0));
+            time = Time.time;
+        }
+
 
         void Update()
         {
+            vector += OffsetValue();
+            time = Time.time / 1000; // Neds to be /1000
+            skydome.GetComponent<Renderer>().material.SetTextureOffset("_MainTex", vector);
+        }
 
-            float angleThisFrame = Time.deltaTime / 360 * timeScale;
+        Vector2 OffsetValue()
+        {
+            pos = Mathf.Lerp(0, 1, Time.deltaTime * timeScale);
+            Vector2 vector = new Vector2(pos, 0);
 
-            transform.RotateAround(transform.position, Vector3.forward, angleThisFrame);
+            if (pos == 1)
+            {
+                time = 0;
+            }
 
+            return vector;
         }
     }
 }

@@ -18,6 +18,7 @@ namespace RPG.Characters
     {
         const string DEATH_TRIGGER = "Death";
         const string ATTACK_TRIGGER = "Attack";
+        const string HIT_TRIGGER = "Hit";
 
         [SerializeField] float maxHealthPoints = 100f;
         [SerializeField] float playerBaseDamage = 10f;
@@ -52,8 +53,9 @@ namespace RPG.Characters
         {
             bool playerDies = (currentHealthPoints - damage <= 0); // Must ask before Reducing Health
             ReduceHealth(damage);
-            if (damage > 0) // Stop hit sound when heal - TODO find better solution
+            if (damage > 0 ) // Stop hit sound when heal - TODO find better solution
             {
+                animator.SetTrigger(HIT_TRIGGER);
                 PlayRandomHitSound();
             }
             if (playerDies) 
