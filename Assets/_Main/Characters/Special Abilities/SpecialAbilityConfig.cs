@@ -1,5 +1,4 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using RPG.Core;
 
@@ -22,18 +21,25 @@ namespace RPG.Characters
         [Header("Special Ability General")]
         [SerializeField] float energyCost = 50f;
         [SerializeField] GameObject particleSystem = null;
-        [SerializeField] AudioClip audioClip = null;
+        [SerializeField] AudioClip[] audioClips = null;
 
-        protected ISpecialAbility behaviour;
+        protected SpecialAbilityBehaviour behaviour;
 
-        abstract public void AttachComponent(GameObject gameObjectToAttach);
+        abstract public SpecialAbilityBehaviour GetBehaviourComponent(GameObject gameObjectToAttach);
+
+        public void AttachAbilityTo(GameObject gameObjectToAttach)
+        {
+            SpecialAbilityBehaviour behaviourComponent = GetBehaviourComponent(gameObjectToAttach);
+            behaviourComponent.SetConfig(this);
+            behaviour = behaviourComponent;
+        }
 
         public void Use(AbilityUseParameters useParameters)
         {
             behaviour.Use(useParameters);
         }
 
-
+        
         public float GetEnergyCost()
         {
             return energyCost;
@@ -44,17 +50,12 @@ namespace RPG.Characters
             return particleSystem;
         }
 
-        public AudioClip GetAudioClip()
+        public AudioClip GetRandomAudioClip()
         {
-            return audioClip;
+            return audioClips[Random.Range(0,audioClips.Length)];
         }
 
 	}
-
-    public interface ISpecialAbility
-    {
-        void Use(AbilityUseParameters useParameters);
-    }
 
 
 }

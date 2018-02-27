@@ -14,6 +14,7 @@ namespace RPG.Weapon
         [SerializeField] AnimationClip attackAnimation;
         [SerializeField] float attackRate = 0.5f;
         [SerializeField] float attackRange = 2f;
+        [SerializeField] float additionalDamage = 10f;
 
         public float GetAttackRate()
         {
@@ -42,5 +43,12 @@ namespace RPG.Weapon
         {
             attackAnimation.events = new AnimationEvent[0];
         }
+
+        public float GetAdditionalDamage()
+        {
+            return additionalDamage;
+        }
+
+        
     }
 }

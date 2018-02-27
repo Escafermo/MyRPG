@@ -16,30 +16,35 @@ namespace RPG.Characters
 {
     public class Player : MonoBehaviour, IDamageable
     {
+        //Animations & Particles
         const string DEATH_TRIGGER = "Death";
         const string ATTACK_TRIGGER = "Attack";
         const string HIT_TRIGGER = "Hit";
-
-        [SerializeField] float maxHealthPoints = 100f;
-        [SerializeField] float playerBaseDamage = 10f;
-
-        [SerializeField] Weapon.Weapons weaponInHand = null;
         [SerializeField] AnimatorOverrideController animatorOverrideController = null;
         Animator animator;
+        [SerializeField] ParticleSystem criticalHitParticleSystem = null; // Because there a two Particle Systems
 
-        //Temporarily serialized for debugging TODO
-        [SerializeField] SpecialAbilityConfig[] abilities;
-
-        private float currentHealthPoints;
-        private float lastHitTime = 0f;
-        private AudioSource audioSource;
-
+        //Raycastimg
         CameraRaycaster cameraRaycaster = null;
 
+        //Health
+        [SerializeField] float maxHealthPoints = 100f;
+        [SerializeField] float playerBaseDamage = 10f;
+        private float currentHealthPoints;
+        float timeLastPlayerHit = 0f;
+
+        //Damage
+        Enemy enemy = null;
+        [SerializeField] Weapons weaponInHand = null;
+        [SerializeField] SpecialAbilityConfig[] abilities;
+        private float lastHitTime = 0f;
+        [Range(.1f, 1f)] [SerializeField] float criticalHitChance = 0.1f;
+        [Range(1.1f, 2f)] [SerializeField] float criticalHitMultiplier = 1.25f;
+
+        //Audio
+        AudioSource audioSource;
         [SerializeField] AudioClip[] arrayOfHitClips;
         [SerializeField] AudioClip[] arrayOfDeathClips;
-
-        Enemy enemy = null;
 
         void Start()
         {
@@ -66,7 +71,7 @@ namespace RPG.Characters
         {
             for (int i = 0; i < abilities.Length; i++)
             {
-                abilities[i].AttachComponent(gameObject);
+                abilities[i].AttachAbilityTo(gameObject);
             }
         }
 
@@ -85,11 +90,15 @@ namespace RPG.Characters
         public void TakeDamage(float damageAmount)
         {
             bool playerDies = (currentHealthPoints - damageAmount <= 0); // Must ask before Reducing Health
+            bool isTimeToGetHit = Time.time - timeLastPlayerHit > UnityEngine.Random.Range(2f, 5f); // Always take damage, but only play animation and hit sound after 2f-5f delay
+
             ReduceHealth(damageAmount);
-            if (damageAmount > 0) // Stop hit sound when heal - TODO find better solution
+
+            if (damageAmount > 0 && isTimeToGetHit) // Stop hit sound when heal - TODO find better solution
             {
                 animator.SetTrigger(HIT_TRIGGER);
                 PlayRandomHitSound();
+                timeLastPlayerHit = Time.time;
             }
             if (playerDies)
             {
@@ -165,18 +174,6 @@ namespace RPG.Characters
             }
         }
 
-        //private void AttemptSelfSpecialAbility(int abilityIndex, Player player)
-        //{
-        //    var energyComponent = GetComponent<Energy>();
-        //    var energyCost = abilities[abilityIndex].GetEnergyCost();
-        //    if (energyComponent.IsEnergyAvailable(energyCost))
-        //    {
-        //        energyComponent.ConsumeEnergy(energyCost);
-        //        var abilityParameters = new SelfAbilityUseParameters(player, 10f);
-        //    }
-
-        //}
-
         private void OverrideAnimatorController()
         {
             animator = GetComponent<Animator>();
@@ -202,7 +199,10 @@ namespace RPG.Characters
             return weaponHoldingHand[0].gameObject;
         }
 
-
+        public void PickupWeapon(Weapons weaponConfig)
+        {
+            print("put this in player hand " + weaponConfig);
+        }
 
         private bool IsEnemyInRange(Enemy enemy)
         {
@@ -215,8 +215,23 @@ namespace RPG.Characters
             if (Time.time - lastHitTime > weaponInHand.GetAttackRate())
             {
                 animator.SetTrigger(ATTACK_TRIGGER);
-                enemy.TakeDamage(playerBaseDamage);
+                enemy.TakeDamage(CalculateDamage());
                 lastHitTime = Time.time;
+            }
+        }
+
+        private float CalculateDamage()
+        {
+            bool  isCriticalHit = UnityEngine.Random.Range(0f, 1f) <= criticalHitChance;
+            float damageBeforeCritical = (playerBaseDamage + weaponInHand.GetAdditionalDamage());
+            if (isCriticalHit)
+            {
+                criticalHitParticleSystem.Play();
+                return damageBeforeCritical * criticalHitMultiplier;
+            }
+            else
+            {
+                return damageBeforeCritical;
             }
         }
 
@@ -234,15 +249,3 @@ namespace RPG.Characters
     }
 }
 
-//[SerializeField] const int enemyLayerNumber = 9;
-//void OnMouseClick(RaycastHit raycastHit, int layerHit)
-//{
-//    if (layerHit == enemyLayerNumber)
-//    {
-//        var enemy = raycastHit.collider.gameObject;
-//        if (IsEnemyInRange(enemy))
-//        {
-//            AttackEnemy(enemy);
-//        }
-//    }
-//}

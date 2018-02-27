@@ -33,6 +33,11 @@ namespace RPG.Weapon
 
         private void OnCollisionEnter(Collision collision)
         {
+            if (!projectileShooter)
+            {
+                Destroy(gameObject);
+            }
+
             var layerCollidedWith = collision.gameObject.layer;
             var layerOfShooter = projectileShooter.layer;
             if (projectileShooter && layerCollidedWith != layerOfShooter)

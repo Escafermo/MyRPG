@@ -14,5 +14,7 @@ MonoBehaviour:
   energyCost: 25
   particleSystem: {fileID: 1691421729971184, guid: cb0f374995cce254ab51af5dd3e64dc4,
     type: 2}
-  audioClip: {fileID: 8300000, guid: 67e487a580f1a2d4db72e2f76e3e38a1, type: 3}
+  audioClips:
+  - {fileID: 8300000, guid: e0d4c098ee6e4084d81f8abffeeae397, type: 3}
+  - {fileID: 8300000, guid: e00512465287423499796248316e166a, type: 3}
   extraDamage: 100
