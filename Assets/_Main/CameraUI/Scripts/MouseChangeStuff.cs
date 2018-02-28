@@ -64,6 +64,7 @@ namespace RPG.CameraUI
                 velocityX += xSpeed * Input.GetAxis("Mouse X") * distance * 0.02f;
                 velocityY += ySpeed * Input.GetAxis("Mouse Y") * distance * 0.02f;
             }
+
             rotationYAxis += velocityX;
             rotationXAxis -= velocityY;
             rotationXAxis = ClampAngle(rotationXAxis, yMinLimit, yMaxLimit);
@@ -77,6 +78,10 @@ namespace RPG.CameraUI
             velocityY = Mathf.Lerp(velocityY, 0, Time.deltaTime * smoothTime);
 
             transform.position = target.transform.position;
+
+            //transform.rotation = Quaternion.Lerp(rotation, target.transform.rotation, Time.deltaTime * 10);
+
+            //rotation = Quaternion.Lerp(rotation, target.transform.rotation, (1f * Time.deltaTime));
         }
 
         private static float ClampAngle(float angle, float min, float max)

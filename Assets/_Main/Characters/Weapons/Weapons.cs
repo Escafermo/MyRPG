@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using RPG.Core;
 
-namespace RPG.Weapon
+namespace RPG.Characters
 {
     [CreateAssetMenu(menuName = ("RPG_Weapon"))]
     public class Weapons : ScriptableObject

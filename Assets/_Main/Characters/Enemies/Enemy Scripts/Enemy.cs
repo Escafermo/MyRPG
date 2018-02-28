@@ -5,14 +5,13 @@ using UnityStandardAssets.Characters.ThirdPerson;
 
 // TODO consider re-wiring;
 using RPG.Core;
-using RPG.Weapon;
 
 namespace RPG.Characters
 {
     public class Enemy : MonoBehaviour, IDamageable
     {
 
-        [SerializeField] float maxHealthPoints = 100f;
+        //[SerializeField] float maxHealthPoints = 100f;
         [SerializeField] float damagePerShot = 9f;
 
         [SerializeField] float moveToPlayerRadius = 10f;
@@ -25,27 +24,25 @@ namespace RPG.Characters
         [SerializeField] float projectileFrequencyVariation = 0.1f;
         [SerializeField] Vector3 verticalAimOffset = new Vector3(0, 1f, 0);
 
-        private float currentHealthPoints = 100;
+        //private float currentHealthPoints = 100;
         private bool isAttacking = false;
 
-        AICharacterControl aiCharacter = null;
         Player player = null;
 
         private void Start()
         {
             player = FindObjectOfType<Player>();
-            aiCharacter = GetComponent<AICharacterControl>();
 
-            currentHealthPoints = maxHealthPoints;
+            //currentHealthPoints = maxHealthPoints;
         }
 
         private void Update()
         {
-            if (player.healthAsPercentage <= Mathf.Epsilon) // If Player dies, stop Enemy Behaviour
-            {
-                StopAllCoroutines();
-                Destroy(this);
-            }
+            //if (player.healthAsPercentage <= Mathf.Epsilon) // If Player dies, stop Enemy Behaviour
+            //{
+            //    StopAllCoroutines();
+            //    Destroy(this);
+            //}
 
             float distanceToPlayer = Vector3.Distance(player.transform.position, transform.position);
 
@@ -63,32 +60,32 @@ namespace RPG.Characters
 
             if (distanceToPlayer <= moveToPlayerRadius)
             {
-                aiCharacter.SetTarget(player.transform);
+                //aiCharacter.SetTarget(player.transform);
             }
             else
             {
-                aiCharacter.SetTarget(null);
+                //aiCharacter.SetTarget(null);
             }
 
         }
 
-
+        // TODO remove
         public void TakeDamage(float damage)
         {
-            currentHealthPoints = Mathf.Clamp(currentHealthPoints - damage, 0f, maxHealthPoints);
-            if (currentHealthPoints <= 0)
-            {
-                Destroy(gameObject);
-            }
+            //currentHealthPoints = Mathf.Clamp(currentHealthPoints - damage, 0f, maxHealthPoints);
+            //if (currentHealthPoints <= 0)
+            //{
+            //    Destroy(gameObject);
+            //}
         }
 
-        public float healthAsPercentage
-        {
-            get
-            {
-                return currentHealthPoints / (float)maxHealthPoints;
-            }
-        }
+        //public float healthAsPercentage
+        //{
+        //    get
+        //    {
+        //        return currentHealthPoints / (float)maxHealthPoints;
+        //    }
+        //}
 
         // TODO Separate out Shooter firing logic insto separate class
         public void FireProjectile()

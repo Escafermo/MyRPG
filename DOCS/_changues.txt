@@ -1,0 +1,63 @@
+
+- Weapon change mechanics;
+- Weapon namespace into characters;
+- From AICharacterControl -> to CharacterMovement;
+- From ThirdPersonCharacter -> to CharacterMovement;
+- From Player&Enemy-IDamageable -> to HealthSystem;
+- From Player&Enemy-HealthBar -> to HealthSystem;
+
+------------------
+
+27/02
+- Critical hit mechanics&particles;
+- Random delay for player hit sound&animation;
+- AOE&SoftHeal particle effect;
+- SpecialAbilityBehaviour: from Interface (ISpecial) to Inheritance;
+- Random SpecialAbility array of sound effects;
+- New music;
+- AttachSpecialAbilityBehaviour in SpecialAbilityConfig.cs;
+
+-----------------------
+
+26/02
+- New grass;
+- New player;
+- SelfHeal;
+- World&SpecialAbilities particle effects;
+- New assets: particles, houses, props;
+
+
+-----------------------
+
+- HitAnimation;
+- Fixed Sword Attack Animation;
+- Baked new light (mixed);
+- New flow: path&trees&rocks;
+- Flow drawing;
+- New SkyDome, Sun, Clouds;
+- New Night&Day mechanics;
+
+--------------
+
+
+23/02
+- Spreadsheet Soul & Spine (STATS NOT ADDED);
+- Fixed mouse hovering over inspector in Unity;
+- Base of death mechanics;
+- Hit&Death Sounds;
+- Death animation;
+- new Health&Energy HUD;
+- new Smooth Zoom;
+
+--------------
+
+21/02
+- Simplified ClickToMove&Attack (new Raycasting methods);
+- Commented out CursorAffordance & CameraRayCasterEditor;
+- New bug: AudioTrigger stops RayCasting of enemies;
+- Special Abilities System (config, special config, behaviour, Power&AOE Attacks);
+- Energy Single Purpose;
+- AudioTrigger + raycast bug fixed;
+- New Energy Recovery mechanics;
+- AICharacterControl changes: curly braces + agent.velocity=Vector3.zero;
+- Namespacing AICharacterControl & ThirdPersonCharacter;

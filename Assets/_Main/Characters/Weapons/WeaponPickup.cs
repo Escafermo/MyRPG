@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using RPG.Characters;
 
-namespace RPG.Weapon
+namespace RPG.Characters
 {
     [ExecuteInEditMode]
 	public class WeaponPickup : MonoBehaviour 

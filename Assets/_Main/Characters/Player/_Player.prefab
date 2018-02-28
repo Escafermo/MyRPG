@@ -806,7 +806,6 @@ GameObject:
   - component: {fileID: 114130869188207634}
   - component: {fileID: 195221133203222774}
   - component: {fileID: 82735571738211676}
-  - component: {fileID: 114988544996766144}
   - component: {fileID: 114705602132175914}
   - component: {fileID: 114288059913219112}
   - component: {fileID: 114125400987877764}
@@ -2084,7 +2083,8 @@ MonoBehaviour:
   criticalHitParticleSystem: {fileID: 198441141914918210}
   maxHealthPoints: 20
   playerBaseDamage: 10
-  weaponInHand: {fileID: 11400000, guid: dfc45f14b69aae04ca29f5bb77ea9395, type: 2}
+  currentWeaponConfig: {fileID: 11400000, guid: dfc45f14b69aae04ca29f5bb77ea9395,
+    type: 2}
   abilities:
   - {fileID: 11400000, guid: 50b22a18f6e7fde448783829303b5f7d, type: 2}
   - {fileID: 11400000, guid: 91c53201935bcf84cb310a6163193bfc, type: 2}
@@ -2124,18 +2124,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   timeBeforeWalk: 0
---- !u!114 &114988544996766144
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1860513993613126}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8c5335f0882fe4d478883cc8c58ce906, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  target: {fileID: 0}
+  stoppingDistance: 1
 --- !u!136 &136151644280231774
 CapsuleCollider:
   m_ObjectHideFlags: 1
