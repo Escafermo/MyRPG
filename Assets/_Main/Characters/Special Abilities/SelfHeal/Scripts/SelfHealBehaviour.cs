@@ -8,21 +8,21 @@ namespace RPG.Characters
 {
 	public class SelfHealBehaviour : SpecialAbilityBehaviour
 	{
-        Player player = null;
+        PlayerControl player = null;
 
         void Start()
         {
-            player = GetComponent<Player>();
+            player = GetComponent<PlayerControl>();
         }
 
-        public override void Use(AbilityUseParameters useParameters)
+        public override void Use(GameObject target)
         {
-            Heal(useParameters);
+            Heal(target);
             PlayParticleEffect();
             PlaySound();
         }
 
-        private void Heal(AbilityUseParameters useParameters)
+        private void Heal(GameObject target)
         {
             var playerHealth = player.GetComponent<HealthSystem>();
             playerHealth.Heal((config as SelfHealConfig).GetHealAmount());

@@ -1,7 +1,4 @@
 ﻿using UnityEngine;
-using UnityEngine.EventSystems;
-using System.Collections.Generic;
-using System;
 using RPG.Characters;
 
 namespace RPG.CameraUI

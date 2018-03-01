@@ -9,13 +9,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: db617e1ca56f5c4419340bfb4e525263, type: 3}
-  m_Name: Sword
+  m_Name: NewSword
   m_EditorClassIdentifier: 
   gripTransform: {fileID: 4125232821615860, guid: eb0238d9570e7e24b9a10faceba04b99,
     type: 2}
   weaponPrefab: {fileID: 1277290872445230, guid: 0982ce6c23f616d4bae4c222799510a6,
     type: 2}
-  attackAnimation: {fileID: 7400000, guid: 6ac369dcc868d724eb93494d84b33026, type: 2}
-  attackRate: 0.35
-  attackRange: 4
-  additionalDamage: 10
+  attackAnimation: {fileID: 7400000, guid: 04cb27dc01c081446ba2c02f2761f01d, type: 3}
+  attackRate: 0.1
+  attackRange: 2
+  additionalDamage: 25

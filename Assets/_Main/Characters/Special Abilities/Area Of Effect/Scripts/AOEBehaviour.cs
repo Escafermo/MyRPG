@@ -11,35 +11,36 @@ namespace RPG.Characters
 
         // (config as AOEConfig) is a CASTER to specify the kind of config we are talking about
 
-        Player player;
+        PlayerControl player;
 
         void Start()
         {
-            player = GetComponent<Player>();
+            player = GetComponent<PlayerControl>();
         }
 
-        public override void Use(AbilityUseParameters useParameters)
+        public override void Use(GameObject target)
         {
-            DealRadialDamage(useParameters);
+            DealRadialDamage();
             PlayParticleEffect();
             PlaySound();
         }
 
-        private void DealRadialDamage(AbilityUseParameters useParameters)
+        private void DealRadialDamage()
         {
             //Static sphere cast for targets:
             RaycastHit[] hitArray = Physics.SphereCastAll(transform.position, (config as AOEConfig).GetRadius(), Vector3.up, (config as AOEConfig).GetRadius());
             print("AOE");
             foreach (RaycastHit hit in hitArray)
             {
-                var damageable = hit.collider.gameObject.GetComponent<IDamageable>();
-                var enemy = hit.collider.gameObject.GetComponent<Enemy>();
-                //bool hitPlayer = hit.collider.gameObject.GetComponent<Player>();
+                var healthSystem = hit.collider.gameObject.GetComponent<HealthSystem>();
+                //var enemy = hit.collider.gameObject.GetComponent<Enemy>();
+                bool hitPlayer = hit.collider.gameObject.GetComponent<PlayerControl>();
 
-                if (damageable != null && enemy != null /*&& !hitPlayer*/)
+                if (healthSystem != null/* && enemy != null*/ && !hitPlayer)
                 {
-                    float damageToDeal = useParameters.baseDamage + (config as AOEConfig).GetDamageToEachTarget();
-                    damageable.TakeDamage(damageToDeal);
+                    float damageToDeal = (config as AOEConfig).GetDamageToEachTarget();
+                    healthSystem.TakeDamage(damageToDeal);
+                    //enemy.TakeDamage(damageToDeal);
                 }
             }
         }

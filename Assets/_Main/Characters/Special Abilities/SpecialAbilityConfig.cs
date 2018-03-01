@@ -4,17 +4,17 @@ using RPG.Core;
 
 namespace RPG.Characters
 {
-    public struct AbilityUseParameters
-    {
-        public IDamageable target;
-        public float baseDamage;
+    //public struct AbilityUseParameters
+    //{
+    //    public IDamageable target;
+    //    public float baseDamage;
         
-        public AbilityUseParameters(IDamageable thisTarget , float thisBaseDamage)
-        {
-            this.target = thisTarget;
-            this.baseDamage = thisBaseDamage;
-        }
-    }
+    //    public AbilityUseParameters(IDamageable thisTarget , float thisBaseDamage)
+    //    {
+    //        this.target = thisTarget;
+    //        this.baseDamage = thisBaseDamage;
+    //    }
+    //}
 
     public abstract class SpecialAbilityConfig : ScriptableObject
     {
@@ -34,12 +34,11 @@ namespace RPG.Characters
             behaviour = behaviourComponent;
         }
 
-        public void Use(AbilityUseParameters useParameters)
+        public void Use(GameObject target)
         {
-            behaviour.Use(useParameters);
+            behaviour.Use(target);
         }
 
-        
         public float GetEnergyCost()
         {
             return energyCost;

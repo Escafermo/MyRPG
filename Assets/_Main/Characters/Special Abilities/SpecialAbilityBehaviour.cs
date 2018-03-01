@@ -10,7 +10,7 @@ namespace RPG.Characters
 
         protected SpecialAbilityConfig config; // Only Children can see it and set it
 
-        public abstract void Use(AbilityUseParameters useParameters);
+        public abstract void Use(GameObject target = null); // null to be configured by each override method
 
         public void SetConfig(SpecialAbilityConfig configToSet)
         {
@@ -46,7 +46,7 @@ namespace RPG.Characters
         protected void PlaySound()
         {
             AudioSource audioSource = GetComponentInParent<AudioSource>();
-            AudioClip audioClip = config.GetRandomAudioClip(); // TODO change to random clip
+            AudioClip audioClip = config.GetRandomAudioClip(); 
             audioSource.PlayOneShot(audioClip);
         }
 

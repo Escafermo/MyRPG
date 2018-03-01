@@ -1,14 +1,13 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityStandardAssets.Characters.ThirdPerson;
 
 // TODO consider re-wiring;
 using RPG.Core;
 
 namespace RPG.Characters
 {
-    public class Enemy : MonoBehaviour, IDamageable
+    public class Enemy : MonoBehaviour/*, IDamageable*/
     {
 
         //[SerializeField] float maxHealthPoints = 100f;
@@ -27,11 +26,11 @@ namespace RPG.Characters
         //private float currentHealthPoints = 100;
         private bool isAttacking = false;
 
-        Player player = null;
+        PlayerControl player = null;
 
         private void Start()
         {
-            player = FindObjectOfType<Player>();
+            player = FindObjectOfType<PlayerControl>();
 
             //currentHealthPoints = maxHealthPoints;
         }
@@ -70,14 +69,14 @@ namespace RPG.Characters
         }
 
         // TODO remove
-        public void TakeDamage(float damage)
-        {
-            //currentHealthPoints = Mathf.Clamp(currentHealthPoints - damage, 0f, maxHealthPoints);
-            //if (currentHealthPoints <= 0)
-            //{
-            //    Destroy(gameObject);
-            //}
-        }
+        //public void TakeDamage(float damage)
+        //{
+        //    //currentHealthPoints = Mathf.Clamp(currentHealthPoints - damage, 0f, maxHealthPoints);
+        //    //if (currentHealthPoints <= 0)
+        //    //{
+        //    //    Destroy(gameObject);
+        //    //}
+        //}
 
         //public float healthAsPercentage
         //{

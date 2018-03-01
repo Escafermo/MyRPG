@@ -22,7 +22,7 @@ namespace RPG.Characters
 
         Animator myAnimator;
         AudioSource audioSource;
-        CharacterMovement characterMovement;
+        Character characterMovement;
 
 
         
@@ -30,7 +30,7 @@ namespace RPG.Characters
         {
             myAnimator = GetComponent<Animator>();
             audioSource = GetComponent<AudioSource>();
-            characterMovement = GetComponent<CharacterMovement>();
+            characterMovement = GetComponent<Character>();
 
             currentHealthPoints = maxHealthPoints;
         }
@@ -79,7 +79,7 @@ namespace RPG.Characters
             characterMovement.CharacterDeath();
             myAnimator.SetTrigger(DEATH_TRIGGER);
 
-            var playerComponent = GetComponent<Player>();
+            var playerComponent = GetComponent<PlayerControl>();
             if (playerComponent && playerComponent.isActiveAndEnabled) // Relying on lazy evaluation (first evaluation = isPlayerComponent, if false does not look at second evaluation)
             {
                 PlayRandomDeathSound();

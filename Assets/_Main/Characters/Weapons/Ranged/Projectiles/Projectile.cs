@@ -42,7 +42,8 @@ namespace RPG.Characters
             var layerOfShooter = projectileShooter.layer;
             if (projectileShooter && layerCollidedWith != layerOfShooter)
             {
-                DealDamage(collision);
+                //DealDamage(collision);
+                print("Damage to be implemented");
             }
             else
             {
@@ -50,15 +51,16 @@ namespace RPG.Characters
             }
         }
 
-        private void DealDamage(Collision collision)
-        {
-            Component damageableComponent = collision.gameObject.GetComponent(typeof(IDamageable));
+        // TODO re-implement
+        //private void DealDamage(Collision collision)
+        //{
+        //    Component damageableComponent = collision.gameObject.GetComponent(typeof(IDamageable));
 
-            if (damageableComponent)
-            {
-                (damageableComponent as IDamageable).TakeDamage(damageCaused);
-            }
-            Destroy(gameObject, DESTROY_DELAY);
-        }
+        //    if (damageableComponent)
+        //    {
+        //        (damageableComponent as IDamageable).TakeDamage(damageCaused);
+        //    }
+        //    Destroy(gameObject, DESTROY_DELAY);
+        //}
     }
 }
