@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.Assertions;
+using System.Collections;
 
 namespace RPG.Characters
 {
@@ -11,7 +12,7 @@ namespace RPG.Characters
         float lastHitTime;
 
         [SerializeField] WeaponConfig currentWeaponConfig;
-        [SerializeField] float playerBaseDamage = 10f;
+        [SerializeField] float baseDamage = 10f;
 
         Character character;
         Animator animator;
@@ -25,13 +26,31 @@ namespace RPG.Characters
 
             PickupWeapon(currentWeaponConfig); 
             SetAttackAnimation(); 
-            
         }
-	
-	
-		void Update () {
-			
-		}
+
+        void Update()
+        {
+            bool isTargetDead;
+            bool isTargetOutOfRange;
+            if (target == null)
+            {
+                isTargetDead = false;
+                isTargetOutOfRange = false;
+            }
+            else
+            {
+                isTargetDead = target.GetComponent<HealthSystem>().healthAsPercentage <= Mathf.Epsilon;
+                isTargetOutOfRange = Vector3.Distance(transform.position, target.transform.position) > currentWeaponConfig.GetAttackRange();
+            }
+
+            float characterHealth = GetComponent<HealthSystem>().healthAsPercentage;
+            bool characterIsDead = (characterHealth <= Mathf.Epsilon);
+            if (characterIsDead || isTargetOutOfRange || isTargetDead)
+            {
+                StopAllCoroutines();
+            }
+
+        }
 
         public WeaponConfig GetCurrentWeapon()
         {
@@ -43,9 +62,6 @@ namespace RPG.Characters
             currentWeaponConfig = weaponToUse;
             var weaponPrefab = weaponToUse.GetWeaponPrefab();
             GameObject weaponHoldingHand = RequestHoldingHand();
-
-            print("put this in player hand " + weaponToUse +"  "+ weaponObject +"   "+ weaponPrefab);
-
             Destroy(weaponObject); // Empty hands
             weaponObject = Instantiate(weaponPrefab, weaponHoldingHand.transform);
             weaponObject.transform.localPosition = currentWeaponConfig.gripTransform.localPosition;
@@ -61,29 +77,53 @@ namespace RPG.Characters
             return weaponHoldingHand[0].gameObject;
         }
 
-       
-
         public void AttackTarget(GameObject targetToAttack)
         {
             target = targetToAttack;
             print("attacking " + targetToAttack);
-            // TODO use a repeat attack co-routine
+            StartCoroutine(AttackTargetRepeatedly());
         }
 
-        void AttackTarget()
+        IEnumerator AttackTargetRepeatedly()
         {
-            if (Time.time - lastHitTime > currentWeaponConfig.GetAttackRate())
+            bool attackerIsAlive = GetComponent<HealthSystem>().healthAsPercentage >= Mathf.Epsilon;
+            bool targetIsAlive = target.GetComponent<HealthSystem>().healthAsPercentage >= Mathf.Epsilon;
+
+            while(attackerIsAlive && targetIsAlive)
             {
-                SetAttackAnimation();
-                animator.SetTrigger(ATTACK_TRIGGER);
-                //enemy.TakeDamage(CalculateDamage());
-                lastHitTime = Time.time;
+                float attackRate = currentWeaponConfig.GetAttackRate();
+                float timeToWait = attackRate * character.GetAnimationSpeedMultiplier();
+                bool isTimeToAttackAgain = Time.time - lastHitTime > timeToWait;
+
+                if (isTimeToAttackAgain)
+                {
+                    AttackTargetOnce();
+                    lastHitTime = Time.time;
+                }
+                yield return new WaitForSeconds(timeToWait);
             }
         }
 
+        void AttackTargetOnce()
+        {
+            transform.LookAt(target.transform);
+            float damageDelay = .2f; // TODO get from the weapon itself (how far into the weapon swin animation do we deal damage)
+            SetAttackAnimation();
+            animator.SetTrigger(ATTACK_TRIGGER);
+            StartCoroutine(DamageAfterDelay(damageDelay));
+        }
+
+        IEnumerator DamageAfterDelay(float delay)
+        {
+            yield return new WaitForSecondsRealtime(delay);
+            HealthSystem thisHealthSystem = target.GetComponent<HealthSystem>();
+            thisHealthSystem.TakeDamage(CalculateDamage());
+        }
+
+
         float CalculateDamage()
         {
-            return playerBaseDamage + currentWeaponConfig.GetAdditionalDamage();
+            return baseDamage + currentWeaponConfig.GetAdditionalDamage();
             // TODO reinstance CRITICAL HIT
             //bool isCriticalHit = UnityEngine.Random.Range(0f, 1f) <= criticalHitChance;
             //float damageBeforeCritical = (playerBaseDamage + currentWeaponConfig.GetAdditionalDamage());
@@ -100,7 +140,11 @@ namespace RPG.Characters
 
         void SetAttackAnimation()
         {
-            animator = GetComponent<Animator>();
+            if (!character.GetAnimatorOverrideController())
+            {
+                Debug.Break();
+                Debug.LogAssertion("Provide " + gameObject + " with an animator override controller");
+            }
             var animatorOverrideController = character.GetAnimatorOverrideController();
             animator.runtimeAnimatorController = animatorOverrideController;
             animatorOverrideController[DEFAULT_ATTACK] = currentWeaponConfig.GetAttackAnimationClip();  // TODO remove const

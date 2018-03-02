@@ -4,24 +4,13 @@ using RPG.Core;
 
 namespace RPG.Characters
 {
-    //public struct AbilityUseParameters
-    //{
-    //    public IDamageable target;
-    //    public float baseDamage;
-        
-    //    public AbilityUseParameters(IDamageable thisTarget , float thisBaseDamage)
-    //    {
-    //        this.target = thisTarget;
-    //        this.baseDamage = thisBaseDamage;
-    //    }
-    //}
-
     public abstract class SpecialAbilityConfig : ScriptableObject
     {
         [Header("Special Ability General")]
         [SerializeField] float energyCost = 50f;
-        [SerializeField] GameObject particleSystem = null;
-        [SerializeField] AudioClip[] audioClips = null;
+        [SerializeField] GameObject particleSystem;
+        [SerializeField] AudioClip[] audioClips;
+        [SerializeField] AnimationClip[] animationClips;
 
         protected SpecialAbilityBehaviour behaviour;
 
@@ -54,7 +43,12 @@ namespace RPG.Characters
             return audioClips[Random.Range(0,audioClips.Length)];
         }
 
-	}
+        public AnimationClip GetRandomAnimationClip()
+        {
+            return animationClips[Random.Range(0, animationClips.Length)];
+        }
+
+    }
 
 
 }

@@ -18,5 +18,9 @@ MonoBehaviour:
   - {fileID: 8300000, guid: f14106348afcd0547aa30862590d4d70, type: 3}
   - {fileID: 8300000, guid: 4ee566deab5494d41bbd444adc4f648a, type: 3}
   - {fileID: 8300000, guid: f8fca9c01929dbe41930400f07be5c38, type: 3}
+  animationClips:
+  - {fileID: 7400000, guid: 7f0b2182620a9bd4eb51de096c947c0c, type: 3}
+  - {fileID: 7400000, guid: 03a5f073541dc7749b0149436d3b8492, type: 3}
+  - {fileID: 7400000, guid: 71416662a697c3d49a9f25b65349d832, type: 3}
   radius: 10
   damageToEachTarget: 100

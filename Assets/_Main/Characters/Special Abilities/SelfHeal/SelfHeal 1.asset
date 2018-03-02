@@ -18,4 +18,8 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 3ac2f611279ee6a46b1a1adf899f1036, type: 3}
   - {fileID: 8300000, guid: a0fa083ff3526dd479e25f0c4a80c9fd, type: 3}
   - {fileID: 8300000, guid: 206906c9526a5804f8761be402697a72, type: 3}
+  animationClips:
+  - {fileID: 7400000, guid: 8787cc3da435ba04e8954530e0c91454, type: 3}
+  - {fileID: 7400000, guid: 1c63f6911fc6aa0479b7f053fa77b36a, type: 3}
+  - {fileID: 7400000, guid: 21871d38deea5de4d892e013fc2c03ca, type: 3}
   healAmount: 10

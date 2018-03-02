@@ -7,6 +7,8 @@ namespace RPG.Characters
     public abstract class SpecialAbilityBehaviour : MonoBehaviour
     {
         const float PARTICLE_DELAY = 6f;
+        const string ATTACK_TRIGGER = "Attack";
+        const string DEFAULT_ATTACK = "DEFAULT ATTACK";
 
         protected SpecialAbilityConfig config; // Only Children can see it and set it
 
@@ -43,13 +45,26 @@ namespace RPG.Characters
             yield return new WaitForEndOfFrame();
         }
 
-        protected void PlaySound()
+        protected void PlayAbilitySound()
         {
             AudioSource audioSource = GetComponentInParent<AudioSource>();
             AudioClip audioClip = config.GetRandomAudioClip(); 
             audioSource.PlayOneShot(audioClip);
         }
 
-
+        protected void PlayAbilityAnimation()
+        {
+            AnimatorOverrideController animatorOverrideController = GetComponent<Character>().GetAnimatorOverrideController();
+            Animator animator = GetComponentInParent<Animator>();
+            AnimationClip animationClip = config.GetRandomAnimationClip();
+            animator.runtimeAnimatorController = animatorOverrideController;
+            animatorOverrideController[DEFAULT_ATTACK] = animationClip;
+            animator.SetTrigger(ATTACK_TRIGGER);
+            if (!animatorOverrideController)
+            {
+                Debug.Break();
+                Debug.LogAssertion("Provide " + gameObject + " with an animator override controller");
+            }
+        }
     }
 }

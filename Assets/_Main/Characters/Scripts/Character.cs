@@ -5,10 +5,6 @@ using UnityEngine.AI;
 namespace RPG.Characters
 {
     [SelectionBase] // Alows us to click on the BASE GAME OBJECT and not the CHILDREN on Scene view
-    //[RequireComponent(typeof(Rigidbody))]
-    //[RequireComponent(typeof(CapsuleCollider))]
-    //[RequireComponent(typeof(Animator))]
-    //[RequireComponent(typeof(NavMeshAgent))]
     public class Character : MonoBehaviour
     {
         NavMeshAgent navMeshAgent = null;
@@ -102,6 +98,12 @@ namespace RPG.Characters
             }
         }
 
+        public float GetAnimationSpeedMultiplier()
+        {
+            return animator.speed; // Could also use animationSpeedMultiplier
+        }
+
+
         public void SetDestination(Vector3 worldPos)
         {
             navMeshAgent.destination = worldPos;
@@ -123,6 +125,18 @@ namespace RPG.Characters
             ApplyExtraTurnRotation();
             UpdateAnimator();
         }
+
+        //// Halves the move speed from EnemyAI in Patrol state
+        //public void OnPatrol()
+        //{
+        //    agentSpeed = agentSpeed / 2;
+        //}
+
+        //// Back to normal speed
+        //public void Chasing()
+        //{
+        //    agentSpeed = agentSpeed * 2;
+        //}
 
         public void OnAnimatorMove()
         {

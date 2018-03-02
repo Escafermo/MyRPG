@@ -19,7 +19,8 @@ namespace RPG.Characters
         {
             Heal(target);
             PlayParticleEffect();
-            PlaySound();
+            PlayAbilitySound();
+            PlayAbilityAnimation();
         }
 
         private void Heal(GameObject target)

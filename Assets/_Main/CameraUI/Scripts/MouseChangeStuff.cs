@@ -25,9 +25,9 @@ namespace RPG.CameraUI
         float zoomValue = 0f;
         float zoomVelocity = 0f;
         float small = 0.5f;
-        float minCameraDistY = 4f;
+        float minCameraDistY = 3f;
         float maxCameraDistY = 10f;
-        float minCameraDistZ = 5.5f;
+        float minCameraDistZ = 4.5f;
         float maxCameraDistZ = 11.5f;
         private Vector3 localCameraPosition;
 

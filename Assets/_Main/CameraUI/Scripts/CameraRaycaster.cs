@@ -23,7 +23,7 @@ namespace RPG.CameraUI
         public delegate void OnMouseOverDestination(Vector3 destination);
         public event OnMouseOverDestination notifyNewDestinationObservers;
 
-        public delegate void OnMouseOverEnemy(Enemy enemy);
+        public delegate void OnMouseOverEnemy(EnemyAI enemy);
         public event OnMouseOverEnemy notifyNewEnemyObservers;
 
         void Update()
@@ -60,7 +60,7 @@ namespace RPG.CameraUI
             if (hitInfo.transform != null)
             {
                 var gameObjectHit = hitInfo.collider.gameObject;
-                var enemyHit = gameObjectHit.GetComponent<Enemy>();
+                var enemyHit = gameObjectHit.GetComponent<EnemyAI>();
                 if (enemyHit)
                 {
                     Cursor.SetCursor(enemyCursor, cursorHotspot, CursorMode.Auto);
@@ -86,79 +86,3 @@ namespace RPG.CameraUI
         }
     }
 }
-
-#region OLD METHODS FOR RAYCASTING
-
-//[SerializeField] int[] layerPriorities; // TODO remove
-
-//public delegate void OnCursorLayerChange(int newLayer); // declare new delegate type
-//public event OnCursorLayerChange notifyLayerChangeObservers; // instantiate an observer set
-
-//public delegate void OnClickPriorityLayer(RaycastHit raycastHit, int layerHit); // declare new delegate type
-//public event OnClickPriorityLayer notifyMouseClickObservers; // instantiate an observer set
-
-//public delegate void OnClickSpendEnergy(RaycastHit raycastHit, int layerHit); // declare new delegate type
-//public event OnClickSpendEnergy notifyEnergySpent; // instantiate an observer set
-
-//private void FarTooComplex()
-//{
-//    // Raycast to max depth, every frame as things can move under mouse
-//    Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-//    RaycastHit[] raycastHits = Physics.RaycastAll(ray, maxRaycastDepth);
-
-//    RaycastHit? priorityHit = FindTopPriorityHit(raycastHits);
-//    if (!priorityHit.HasValue) // if hit no priority object
-//    {
-//        NotifyObserersIfLayerChanged(0); // broadcast default layer
-//        return;
-//    }
-
-//    // Notify delegates of layer change
-//    var layerHit = priorityHit.Value.collider.gameObject.layer;
-//    NotifyObserersIfLayerChanged(layerHit);
-
-//    // Notify delegates of highest priority game object under mouse when clicked
-//    if (Input.GetMouseButton(0))
-//    {
-//        notifyMouseClickObservers(priorityHit.Value, layerHit);
-//    }
-
-//    // Notify delegates of second button mouse click for energy spenditure 
-//    if (Input.GetMouseButtonDown(2))
-//    {
-//        notifyEnergySpent(priorityHit.Value, layerHit);
-//    }
-//}
-
-//void NotifyObserersIfLayerChanged(int newLayer)
-//{
-//    if (newLayer != topPriorityLayerLastFrame)
-//    {
-//        topPriorityLayerLastFrame = newLayer;
-//        notifyLayerChangeObservers(newLayer);
-//    }
-//}
-
-//RaycastHit? FindTopPriorityHit(RaycastHit[] raycastHits)
-//{
-//    // Form list of layer numbers hit
-//    List<int> layersOfHitColliders = new List<int>();
-//    foreach (RaycastHit hit in raycastHits)
-//    {
-//        layersOfHitColliders.Add(hit.collider.gameObject.layer);
-//    }
-
-//    // Step through layers in order of priority looking for a gameobject with that layer
-//    foreach (int layer in layerPriorities)
-//    {
-//        foreach (RaycastHit hit in raycastHits)
-//        {
-//            if (hit.collider.gameObject.layer == layer)
-//            {
-//                return hit; // stop looking
-//            }
-//        }
-//    }
-//    return null; // because cannot use GameObject? nullable
-//}
-#endregion

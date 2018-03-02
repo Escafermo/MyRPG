@@ -23,8 +23,6 @@ namespace RPG.Characters
         Animator myAnimator;
         AudioSource audioSource;
         Character characterMovement;
-
-
         
         private void Start()
         {
@@ -34,8 +32,6 @@ namespace RPG.Characters
 
             currentHealthPoints = maxHealthPoints;
         }
-
-
 
 
         private void Update()
@@ -56,15 +52,16 @@ namespace RPG.Characters
         public void TakeDamage(float damageAmount)
         {
             bool characterDies = (currentHealthPoints - damageAmount <= 0); // Must ask before Reducing Health
-            bool isTimeToGetHit = (Time.time - timeLastCharacterHit) > UnityEngine.Random.Range(2f, 5f); // Always take damage, but only play animation and hit sound after 2f-5f delay
+            //bool isTimeToGetHit = (Time.time - timeLastCharacterHit) > UnityEngine.Random.Range(2f, 5f); // Always take damage, but only play animation and hit sound after 2f-5f delay
+            // TODO reinstance this isTimeToGetHit only for player
 
             currentHealthPoints = Mathf.Clamp(currentHealthPoints - damageAmount, 0f, maxHealthPoints);
 
-            if (damageAmount > 0 && isTimeToGetHit) // Stop hit sound when heal - TODO find better solution
+            if (damageAmount > 0/* && isTimeToGetHit*/) // Stop hit sound when heal - TODO find better solution
             {
                 myAnimator.SetTrigger(HIT_TRIGGER);
                 PlayRandomHitSound();
-                timeLastCharacterHit = Time.time;
+                //timeLastCharacterHit = Time.time;
             }
             if (characterDies)
             {
