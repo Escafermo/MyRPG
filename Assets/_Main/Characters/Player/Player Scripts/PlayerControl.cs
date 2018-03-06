@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
-using UnityEngine.Assertions;
 using RPG.CameraUI;
+using System.Collections;
 
 namespace RPG.Characters
 {
@@ -11,22 +11,22 @@ namespace RPG.Characters
         SpecialAbilities abilities;
         WeaponSystem weaponSystem;
 
-        CameraRaycaster cameraRaycaster;
         [SerializeField] float timeBeforeWalk;
 
-        [Header("Damage")]
-        [Range(.1f, 1f)] [SerializeField] float criticalHitChance = 0.1f;
-        [Range(1.1f, 2f)] [SerializeField] float criticalHitMultiplier = 1.25f;
-        [SerializeField] ParticleSystem criticalHitParticleSystem; // Because there a two Particle Systems
+        //bool isTargetOutOfRange;
+
+        //[Header("Damage")]
+        //[Range(.1f, 1f)] [SerializeField] float criticalHitChance = 0.1f;
+        //[Range(1.1f, 2f)] [SerializeField] float criticalHitMultiplier = 1.25f;
+        //[SerializeField] ParticleSystem criticalHitParticleSystem; // Because there a two Particle Systems
 
         void Start()
         {
             character = GetComponent<Character>();
             abilities = GetComponent<SpecialAbilities>();
+            weaponSystem = GetComponent<WeaponSystem>();
 
             RegisterForMouseEvents();
-
-            weaponSystem = GetComponent<WeaponSystem>();
         }
 
         void Update()
@@ -40,36 +40,64 @@ namespace RPG.Characters
 
         void RegisterForMouseEvents()
         {
-            cameraRaycaster = Camera.main.GetComponent<CameraRaycaster>();
+            CameraRaycaster cameraRaycaster = Camera.main.GetComponent<CameraRaycaster>();
             cameraRaycaster.notifyNewDestinationObservers += FindNewDestination;
             cameraRaycaster.notifyNewEnemyObservers += FindNewEnemy;
         }
 
-        void FindNewEnemy(EnemyAI currentEnemy)
+        void FindNewEnemy(EnemyAI enemy)
         {
-            this.enemy = currentEnemy;
-
-            if (Input.GetMouseButton(0) && IsEnemyInRange(enemy))
+            if (Input.GetMouseButton(0) && IsTargetInRange(enemy.gameObject))
             {
                 weaponSystem.AttackTarget(enemy.gameObject);
             }
-            else if (Input.GetMouseButtonDown(2))
+            else if (Input.GetMouseButton(0) && !IsTargetInRange(enemy.gameObject))
             {
-                abilities.AttemptSpecialAbility(0);
+                StartCoroutine(MoveAndAttack(enemy));
+            }
+            else if (Input.GetMouseButtonDown(2) && IsTargetInRange(enemy.gameObject))
+            {
+                abilities.AttemptSpecialAbility(0,enemy.gameObject); // TODO Targeting the enemy whe clicked on
+            }
+            else if (Input.GetMouseButtonDown(2) && !IsTargetInRange(enemy.gameObject))
+            {
+                StartCoroutine(MoveAndSpecialAttack(enemy));
             }
         }
 
-        bool IsEnemyInRange(EnemyAI enemy)
+        IEnumerator MoveToTarget(GameObject target)
         {
-            float distanceToEnemy = (enemy.transform.position - transform.position).magnitude;
+            while (!IsTargetInRange(target))
+            {
+                character.SetDestination(target.transform.position);
+                yield return new WaitForEndOfFrame();
+            }
+            yield return new WaitForEndOfFrame();
+        }
+
+        IEnumerator MoveAndAttack(EnemyAI enemy)
+        {
+            yield return (StartCoroutine(MoveToTarget(enemy.gameObject)));
+            weaponSystem.AttackTarget(enemy.gameObject);
+        }
+
+        IEnumerator MoveAndSpecialAttack(EnemyAI enemy)
+        {
+            yield return (StartCoroutine(MoveToTarget(enemy.gameObject)));
+            abilities.AttemptSpecialAbility(0, enemy.gameObject);
+        }
+
+        bool IsTargetInRange(GameObject target)
+        {
+            float distanceToEnemy = (target.transform.position - transform.position).magnitude;
             return distanceToEnemy <= weaponSystem.GetCurrentWeapon().GetAttackRange();
         }
 
-
         void FindNewDestination(Vector3 destination) // Set destination to click pos
         {
-            if (Time.fixedTime > timeBeforeWalk && Input.GetMouseButton(0)) //Delay for waking up animation
+            if (Time.fixedTime > timeBeforeWalk && Input.GetMouseButton(0) && character.IsCharacterAlive()) //Delay for waking up animation
             {
+                weaponSystem.StopAttacking();
                 character.SetDestination(destination);
             }
         }

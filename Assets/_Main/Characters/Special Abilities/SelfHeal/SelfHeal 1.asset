@@ -22,4 +22,4 @@ MonoBehaviour:
   - {fileID: 7400000, guid: 8787cc3da435ba04e8954530e0c91454, type: 3}
   - {fileID: 7400000, guid: 1c63f6911fc6aa0479b7f053fa77b36a, type: 3}
   - {fileID: 7400000, guid: 21871d38deea5de4d892e013fc2c03ca, type: 3}
-  healAmount: 10
+  healAmount: 100

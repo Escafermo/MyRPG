@@ -6,34 +6,41 @@ namespace RPG.CameraUI
 {
     public class MouseChangeStuff : MonoBehaviour
     {
-        // Handles ZOOM and PAN
 
-        public Transform target;
-        public float distance = 2.0f;
-        public float xSpeed = 20.0f;
-        public float ySpeed = 20.0f;
-        public float yMinLimit = -90f;
-        public float yMaxLimit = 90f;
-        public float distanceMin = 10f;
-        public float distanceMax = 10f;
-        public float smoothTime = 2f;
+        [SerializeField] Transform target;
+        Vector3 localCameraPosition;
+
+        // Pan
+        [SerializeField] float yMinLimit = 20f;
+        [SerializeField] float yMaxLimit = 40f;
+        [SerializeField] float xMinLimit = -5f;
+        [SerializeField] float xMaxLimit = 5f;
+
+        float distance = 2.0f;
+        float xSpeed = 10.0f;
+        float ySpeed = 10.0f;
+        float distanceMin = 10f;
+        float distanceMax = 10f;
+        float smoothTime = 3f;
         float rotationYAxis = 0.0f;
         float rotationXAxis = 0.0f;
-        float velocityX = 0.0f;
-        float velocityY = 0.0f;
+        float panVelocityX = 0.0f;
+        float panVelocityY = 0.0f;
+
+        //Zoom
+        [SerializeField] Vector3 startingPosition = new Vector3(0f, 9f, 10f);
+        [SerializeField] float minCameraDistY = 3f;
+        [SerializeField] float maxCameraDistY = 9f;
+        [SerializeField] float minCameraDistZ = 4f;
+        [SerializeField] float maxCameraDistZ = 10f;
 
         float zoomValue = 0f;
         float zoomVelocity = 0f;
-        float small = 0.5f;
-        float minCameraDistY = 3f;
-        float maxCameraDistY = 10f;
-        float minCameraDistZ = 4.5f;
-        float maxCameraDistZ = 11.5f;
-        private Vector3 localCameraPosition;
+        float zoomCap = 0.5f;
 
         void Start()
         {
-            localCameraPosition = new Vector3(0, 4f, 5.5f);
+            localCameraPosition = startingPosition;
           
 
             Vector3 angles = transform.eulerAngles;
@@ -61,21 +68,22 @@ namespace RPG.CameraUI
         {
             if (Input.GetMouseButton(1))
             {
-                velocityX += xSpeed * Input.GetAxis("Mouse X") * distance * 0.02f;
-                velocityY += ySpeed * Input.GetAxis("Mouse Y") * distance * 0.02f;
+                panVelocityX += xSpeed * Input.GetAxis("Mouse X") * distance * 0.02f;
+                panVelocityY += ySpeed * Input.GetAxis("Mouse Y") * distance * 0.02f;
             }
 
-            rotationYAxis += velocityX;
-            rotationXAxis -= velocityY;
-            rotationXAxis = ClampAngle(rotationXAxis, yMinLimit, yMaxLimit);
+            rotationYAxis += panVelocityX;
+            rotationXAxis -= panVelocityY;
+            rotationXAxis = ClampAngle(rotationXAxis, xMinLimit, xMaxLimit);
+            rotationYAxis = ClampAngle(rotationYAxis, yMinLimit, yMaxLimit);
 
             Quaternion toRotation = Quaternion.Euler(-rotationXAxis, rotationYAxis, 0);
             Quaternion rotation = toRotation;
 
             transform.rotation = rotation;
 
-            velocityX = Mathf.Lerp(velocityX, 0, Time.deltaTime * smoothTime);
-            velocityY = Mathf.Lerp(velocityY, 0, Time.deltaTime * smoothTime);
+            panVelocityX = Mathf.Lerp(panVelocityX, 0, Time.deltaTime * smoothTime);
+            panVelocityY = Mathf.Lerp(panVelocityY, 0, Time.deltaTime * smoothTime);
 
             transform.position = target.transform.position;
 
@@ -99,7 +107,7 @@ namespace RPG.CameraUI
 
             if (Input.GetAxis("Mouse ScrollWheel") != 0 && IsLocalPositionOk())
             {
-                zoomVelocity += Input.GetAxis("Mouse ScrollWheel") * small;
+                zoomVelocity += Input.GetAxis("Mouse ScrollWheel") * zoomCap;
             }
             else if (IsLocalPositionToZeroZoomValue()) // If passed limits
             {

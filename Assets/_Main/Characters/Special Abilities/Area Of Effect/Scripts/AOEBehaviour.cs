@@ -30,7 +30,6 @@ namespace RPG.Characters
         {
             //Static sphere cast for targets:
             RaycastHit[] hitArray = Physics.SphereCastAll(transform.position, (config as AOEConfig).GetRadius(), Vector3.up, (config as AOEConfig).GetRadius());
-            print("AOE");
             foreach (RaycastHit hit in hitArray)
             {
                 var healthSystem = hit.collider.gameObject.GetComponent<HealthSystem>();

@@ -8,18 +8,11 @@ namespace RPG.Characters
     [RequireComponent(typeof(Character))]
     public class EnemyAI : MonoBehaviour
     {
-        //[SerializeField] float damagePerShot = 9f;
-
         [SerializeField] float moveToPlayerRadius = 10f;
         [SerializeField] float moveToPlayerSecondRadius = 50f; //TODO make enemy have a bigger chase radius after seeign the player for the 1st time
         [SerializeField] WaypointContainer patrolPath;
         [SerializeField] float waypointTolerance = 2f;
-
-        //[SerializeField] GameObject projectileToUse;
-        //[SerializeField] GameObject projectileSpawnSocket;
-        //[SerializeField] float projectileFrequency = 1f;
-        //[SerializeField] float projectileFrequencyVariation = 0.1f;
-        //[SerializeField] Vector3 verticalAimOffset = new Vector3(0, 1f, 0);
+        [SerializeField] float waypointDwellTime;
 
         enum State { idle, attack, patrol, heal, chase, flee, warn} // TODO implement heal, flee, warn
         State state = State.idle;
@@ -44,20 +37,32 @@ namespace RPG.Characters
 
             distanceToPlayer = Vector3.Distance(player.transform.position, transform.position);
 
-            if (distanceToPlayer > moveToPlayerRadius && state != State.patrol)
+            bool inWeaponRange = distanceToPlayer <= currentWeaponRange;
+            bool inMoveToPlayerRange = distanceToPlayer > currentWeaponRange && distanceToPlayer <= moveToPlayerRadius;
+            bool outOfRange = distanceToPlayer > moveToPlayerRadius;
+
+            //if (distanceToPlayer > moveToPlayerRadius && state != State.patrol)
+            if (outOfRange && character.IsCharacterAlive())
             {
                 StopAllCoroutines();
+                weaponSystem.StopAttacking();
+                character.isWalking();
                 StartCoroutine(Patrol());
             }
-            if (distanceToPlayer <= moveToPlayerRadius && state != State.chase)
+            //if (distanceToPlayer <= moveToPlayerRadius && state != State.chase)
+            if (inMoveToPlayerRange && character.IsCharacterAlive())
             {
                 StopAllCoroutines();
+                weaponSystem.StopAttacking();
+                character.isRunning();
                 StartCoroutine(ChasePlayer());
             }
-            if (distanceToPlayer <= currentWeaponRange && state != State.attack)
+            //if (distanceToPlayer <= currentWeaponRange && state != State.attack)
+            if (inWeaponRange && character.IsCharacterAlive())
             {
                 StopAllCoroutines();
                 state = State.attack;
+                weaponSystem.AttackTarget(player.gameObject);
             }
         }
         
@@ -76,12 +81,12 @@ namespace RPG.Characters
         {
             state = State.patrol;
 
-            while (true)
+            while (patrolPath != null)
             {
                 Vector3 nextWaypointPos = patrolPath.transform.GetChild(nextWaypointIndex).position;
                 character.SetDestination(nextWaypointPos);
                 CycleWaypointWhenClose(nextWaypointPos);
-                yield return new WaitForSeconds(0.5f); // TODO parameterise for 0.5f
+                yield return new WaitForSeconds(waypointDwellTime); // TODO parameterise for 0.5f
             }
 
         }
@@ -94,20 +99,6 @@ namespace RPG.Characters
             }
         }
 
-
-        //// TODO Separate out Shooter firing logic insto separate class
-        //public void FireProjectile()
-        //{
-        //    GameObject newProjectile = Instantiate(projectileToUse, projectileSpawnSocket.transform.position, Quaternion.identity);
-        //    Projectile projectileComponent = newProjectile.GetComponent<Projectile>();
-        //    projectileComponent.SetDamage(damagePerShot);
-        //    projectileComponent.SetShooter(gameObject);
-
-        //    Vector3 unitVectorToPlayer = ((player.transform.position + (verticalAimOffset)) - projectileSpawnSocket.transform.position).normalized;
-        //    float thisProjectileSpeed = projectileComponent.GetDefaultLaunchSpeed();
-        //    newProjectile.GetComponent<Rigidbody>().velocity = unitVectorToPlayer * thisProjectileSpeed;
-        //}
-
         private void OnDrawGizmos()
         {
             //Draw attack gizmos
@@ -117,7 +108,5 @@ namespace RPG.Characters
             Gizmos.color = new Color(0f, 0f, 255f, 0.5f);
             Gizmos.DrawWireSphere(transform.position, currentWeaponRange);
         }
-
-
     }
 }

@@ -22,13 +22,13 @@ namespace RPG.Characters
 
         Animator myAnimator;
         AudioSource audioSource;
-        Character characterMovement;
+        Character character;
         
         private void Start()
         {
             myAnimator = GetComponent<Animator>();
             audioSource = GetComponent<AudioSource>();
-            characterMovement = GetComponent<Character>();
+            character = GetComponent<Character>();
 
             currentHealthPoints = maxHealthPoints;
         }
@@ -59,7 +59,7 @@ namespace RPG.Characters
 
             if (damageAmount > 0/* && isTimeToGetHit*/) // Stop hit sound when heal - TODO find better solution
             {
-                myAnimator.SetTrigger(HIT_TRIGGER);
+                //myAnimator.SetTrigger(HIT_TRIGGER);
                 PlayRandomHitSound();
                 //timeLastCharacterHit = Time.time;
             }
@@ -69,33 +69,23 @@ namespace RPG.Characters
             }
         }
 
-
         IEnumerator KillCharacter()
         {
-            StopAllCoroutines();
-            characterMovement.CharacterDeath();
+            character.CharacterDeath();
             myAnimator.SetTrigger(DEATH_TRIGGER);
-
+            PlayRandomDeathSound();
+            yield return new WaitForSecondsRealtime(audioSource.clip.length + .5f);
             var playerComponent = GetComponent<PlayerControl>();
+
             if (playerComponent && playerComponent.isActiveAndEnabled) // Relying on lazy evaluation (first evaluation = isPlayerComponent, if false does not look at second evaluation)
             {
-                PlayRandomDeathSound();
-
-                yield return new WaitForSecondsRealtime(audioSource.clip.length + 2f);
-
                 SceneManager.LoadScene(0);
             }
-            else // Assume is enemy TODO reconsider for other NPCs
+            else
             {
                 DestroyObject(gameObject, deathVanishSeconds);
-
-
             }
-
-            
         }
-
-
 
         void UpdateHealthBar()
         {
@@ -109,9 +99,6 @@ namespace RPG.Characters
         {
             currentHealthPoints = Mathf.Clamp(currentHealthPoints + healAmount, 0f, maxHealthPoints);
         }
-
-
-        /////////////////////////////////////////////////////////////////////
 
         private void PlayRandomHitSound()
         {

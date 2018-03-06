@@ -23,6 +23,7 @@ namespace RPG.Characters
         [SerializeField] float movingTurnSpeed = 360;
         [SerializeField] float stationaryTurnSpeed = 180;
         [SerializeField] float moveThreshold = 1f;
+        float animatorMoveCap = 1f; // 1f = run & .5f = walk
         float turnAmount;
         float forwardAmount;
 
@@ -39,6 +40,7 @@ namespace RPG.Characters
 
         [Header("Audio")]
         [SerializeField] float audioSourceSpatialBlend = 0f;
+        [SerializeField] float volume = 1f;
 
         private void Awake()
         {
@@ -77,25 +79,33 @@ namespace RPG.Characters
             audioSource.playOnAwake = false;
             audioSource.loop = false;
             audioSource.spatialBlend = audioSourceSpatialBlend;
+            audioSource.volume = volume;
         }
-
-        //void Start()
-        //{
-        //    CameraRaycaster cameraRaycaster = Camera.main.GetComponent<CameraRaycaster>();
-        //    cameraRaycaster.notifyNewDestinationObservers += FindNewDestination;
-        //    cameraRaycaster.notifyNewEnemyObservers += FindNewEnemy;
-        //}
 
         private void Update()
         {
+            if (!navMeshAgent.isOnNavMesh)
+            {
+                Debug.LogError(gameObject.name + " this object is outside the navmesh.");
+            }
             if (navMeshAgent.remainingDistance > navMeshAgent.stoppingDistance && isAlive)
             {
-                this.Move(navMeshAgent.desiredVelocity);
+                Move(navMeshAgent.desiredVelocity);
             }
             else
             {
-                this.Move(Vector3.zero);
+                Move(Vector3.zero);
             }
+        }
+
+        public void isWalking()
+        {
+            animatorMoveCap = .5f;
+        }
+
+        public void isRunning()
+        {
+            animatorMoveCap = 1f;
         }
 
         public float GetAnimationSpeedMultiplier()
@@ -113,6 +123,12 @@ namespace RPG.Characters
         {
             isAlive = false;
         }
+
+        public bool IsCharacterAlive()
+        {
+            return isAlive;
+        }
+
 
         public AnimatorOverrideController GetAnimatorOverrideController()
         {
@@ -185,7 +201,7 @@ namespace RPG.Characters
         void UpdateAnimator()
         {
             // update the animator parameters
-            animator.SetFloat("Forward", forwardAmount, 0.1f, Time.deltaTime);
+            animator.SetFloat("Forward", forwardAmount * animatorMoveCap, 0.1f, Time.deltaTime);
             animator.SetFloat("Turn", turnAmount, 0.1f, Time.deltaTime);
             animator.speed = animationSpeedMultiplier;
         }

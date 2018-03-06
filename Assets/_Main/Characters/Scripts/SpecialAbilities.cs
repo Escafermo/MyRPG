@@ -109,7 +109,10 @@ namespace RPG.Characters
         // TODO remove magic numbers below
         void UpdateEnergyBar()
         {
-            energyOrb.fillAmount = energyAsPercentage;
+            if (energyOrb)
+            {
+                energyOrb.fillAmount = energyAsPercentage;
+            }
         }
 
     }

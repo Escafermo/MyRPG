@@ -177,7 +177,7 @@ GameObject:
   - component: {fileID: 4699828679665394}
   - component: {fileID: 198441141914918210}
   - component: {fileID: 199728182943439862}
-  m_Layer: 10
+  m_Layer: 0
   m_Name: CriticalHit Particles
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -805,7 +805,7 @@ GameObject:
   - component: {fileID: 114125400987877764}
   - component: {fileID: 114314776534696352}
   - component: {fileID: 114055559079673844}
-  m_Layer: 10
+  m_Layer: 0
   m_Name: _Player
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -1931,7 +1931,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   currentWeaponConfig: {fileID: 11400000, guid: 83591925cbfcfce4691a1df84840a59d,
     type: 2}
-  playerBaseDamage: 10
+  baseDamage: 10
 --- !u!114 &114125400987877764
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1966,9 +1966,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   timeBeforeWalk: 0
-  criticalHitChance: 0.5
-  criticalHitMultiplier: 1.25
-  criticalHitParticleSystem: {fileID: 198441141914918210}
 --- !u!114 &114314776534696352
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2030,9 +2027,10 @@ MonoBehaviour:
   colliderHeight: 1.6
   agentSpeed: 5
   agentAngularSpeed: 12
-  agentAcceleration: 10
+  agentAcceleration: 50
   agentStoppingDistance: 1
   audioSourceSpatialBlend: 0
+  volume: 0.2
 --- !u!137 &137699188023618986
 SkinnedMeshRenderer:
   m_ObjectHideFlags: 1

@@ -21,6 +21,7 @@ GameObject:
   - component: {fileID: 4350755075776764}
   - component: {fileID: 33573537084397340}
   - component: {fileID: 23696914753429200}
+  - component: {fileID: 65253553775229078}
   m_Layer: 0
   m_Name: Peaseant Hut
   m_TagString: Untagged
@@ -34,13 +35,13 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1573427850273978}
-  m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -3.284195, y: 0.021894, z: -77.02}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalRotation: {x: 0.010386151, y: -0.82376033, z: -0.015098953, w: 0.566642}
+  m_LocalPosition: {x: 206.13, y: -16.44, z: -83.77}
+  m_LocalScale: {x: 1.2500002, y: 1.2500002, z: 1.2500002}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: -0.75100005, y: -110.941, z: -1.9610001}
 --- !u!23 &23696914753429200
 MeshRenderer:
   m_ObjectHideFlags: 1
@@ -85,3 +86,15 @@ MeshFilter:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1573427850273978}
   m_Mesh: {fileID: 4300000, guid: 39b1a31bbcce0464b9df9fcc387eb7d3, type: 3}
+--- !u!65 &65253553775229078
+BoxCollider:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1573427850273978}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 4.4312553, y: 3.6570866, z: 4.3734117}
+  m_Center: {x: -0.06268968, y: 1.8066496, z: 0.0040432005}

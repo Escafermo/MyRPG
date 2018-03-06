@@ -17,5 +17,6 @@ MonoBehaviour:
     type: 2}
   attackAnimation: {fileID: 7400000, guid: 9e5d42c64f4181e4e92729d62fa2d0fd, type: 3}
   attackRate: 0.25
-  attackRange: 2
-  additionalDamage: 10
+  attackRange: 0
+  additionalDamage: 0
+  damageDelay: 0.5

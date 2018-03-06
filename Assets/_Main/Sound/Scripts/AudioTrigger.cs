@@ -5,33 +5,42 @@ namespace RPG.Core
     public class AudioTrigger : MonoBehaviour
     {
         [SerializeField] AudioClip clip;
-        [SerializeField] int layerFilter;
-        [SerializeField] float triggerRadius;
+        //[SerializeField] int layerFilter;
+        [SerializeField] float playerDistanceTrigger = 2f;
         [SerializeField] bool isOneTimeOnly = true;
 
-        [SerializeField] bool hasPlayed = false;
+        bool hasPlayed = false;
         AudioSource audioSource;
+        GameObject player;
 
         void Start()
         {
-            audioSource = gameObject.AddComponent<AudioSource>();
+            audioSource = GetComponent<AudioSource>();
             audioSource.playOnAwake = false;
-            audioSource.clip = clip;
 
-            SphereCollider sphereCollider = gameObject.AddComponent<SphereCollider>();
-            sphereCollider.isTrigger = true;
-            sphereCollider.radius = triggerRadius;
+            player = GameObject.FindGameObjectWithTag("Player");
+            //SphereCollider sphereCollider = gameObject.AddComponent<SphereCollider>();
+            //sphereCollider.isTrigger = true;
+            //sphereCollider.radius = triggerRadius;
 
-            gameObject.layer = LayerMask.NameToLayer("Ignore Raycast");
+            //gameObject.layer = LayerMask.NameToLayer("Ignore Raycast");
         }
 
-        void OnTriggerEnter(Collider other)
+        private void Update()
         {
-            if (other.gameObject.layer == layerFilter)
+            float distanceToPlayer = Vector3.Distance(transform.position, player.transform.position);
+            if (distanceToPlayer <= playerDistanceTrigger)
             {
                 RequestPlayAudioClip();
             }
         }
+        //void OnTriggerEnter(Collider other)
+        //{
+        //    if (other.gameObject.layer == layerFilter)
+        //    {
+        //        RequestPlayAudioClip();
+        //    }
+        //}
 
         void RequestPlayAudioClip()
         {
@@ -39,9 +48,10 @@ namespace RPG.Core
             {
                 return;
             }
-            else if (audioSource.isPlaying == false)
+            else
             {
-                audioSource.Play();
+                audioSource.clip = clip;
+                audioSource.PlayOneShot(clip);
                 hasPlayed = true;
             }
         }
@@ -49,7 +59,7 @@ namespace RPG.Core
         void OnDrawGizmos()
         {
             Gizmos.color = new Color(0, 255f, 0, .5f);
-            Gizmos.DrawWireSphere(transform.position, triggerRadius);
+            Gizmos.DrawWireSphere(transform.position, playerDistanceTrigger);
         }
     }
 }

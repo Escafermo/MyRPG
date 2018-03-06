@@ -44,8 +44,9 @@ namespace RPG.Characters
 
         private void OnTriggerEnter(Collider thisCollider) // May be slow TODO find 
         {
-            GameObject thisGameObject = thisCollider.gameObject;
-            WeaponSystem weaponSystem = thisGameObject.GetComponent<WeaponSystem>();
+            //GameObject thisGameObject = thisCollider.gameObject;
+            //WeaponSystem weaponSystem = thisGameObject.GetComponent<WeaponSystem>();
+            WeaponSystem weaponSystem = FindObjectOfType<PlayerControl>().GetComponent<WeaponSystem>();
             weaponSystem.PickupWeapon(weaponConfig);
             audioSource.PlayOneShot(pickupSound);
         }

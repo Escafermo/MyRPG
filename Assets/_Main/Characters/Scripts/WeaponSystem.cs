@@ -77,10 +77,15 @@ namespace RPG.Characters
             return weaponHoldingHand[0].gameObject;
         }
 
+        public void StopAttacking()
+        {
+            animator.StopPlayback();
+            StopAllCoroutines();
+        }
+
         public void AttackTarget(GameObject targetToAttack)
         {
             target = targetToAttack;
-            print("attacking " + targetToAttack);
             StartCoroutine(AttackTargetRepeatedly());
         }
 
@@ -91,8 +96,12 @@ namespace RPG.Characters
 
             while(attackerIsAlive && targetIsAlive)
             {
-                float attackRate = currentWeaponConfig.GetAttackRate();
-                float timeToWait = attackRate * character.GetAnimationSpeedMultiplier();
+                AnimationClip animationClip = currentWeaponConfig.GetAttackAnimationClip();
+                float animationClipTime = animationClip.length / character.GetAnimationSpeedMultiplier();
+                float timeToWait = animationClipTime + currentWeaponConfig.GetTimeBetweenAnimationCycles();
+
+                //float attackRate = currentWeaponConfig.GetTimeBetweenAnimationCycles();
+                //float timeToWait = attackRate * character.GetAnimationSpeedMultiplier();
                 bool isTimeToAttackAgain = Time.time - lastHitTime > timeToWait;
 
                 if (isTimeToAttackAgain)
@@ -107,9 +116,9 @@ namespace RPG.Characters
         void AttackTargetOnce()
         {
             transform.LookAt(target.transform);
-            float damageDelay = .2f; // TODO get from the weapon itself (how far into the weapon swin animation do we deal damage)
-            SetAttackAnimation();
             animator.SetTrigger(ATTACK_TRIGGER);
+            float damageDelay = currentWeaponConfig.GetWeaponDelay();
+            SetAttackAnimation();
             StartCoroutine(DamageAfterDelay(damageDelay));
         }
 
