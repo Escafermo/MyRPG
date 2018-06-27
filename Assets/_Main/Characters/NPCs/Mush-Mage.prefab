@@ -4630,7 +4630,7 @@ MonoBehaviour:
   moveToPlayerSecondRadius: 0
   patrolPath: {fileID: 0}
   waypointTolerance: 2
-  waypointDwellTime: 0.1
+  waypointDwellTime: 0.5
 --- !u!114 &114136574527612626
 MonoBehaviour:
   m_ObjectHideFlags: 1

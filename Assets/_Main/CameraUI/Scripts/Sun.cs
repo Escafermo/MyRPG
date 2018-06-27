@@ -6,14 +6,20 @@ namespace RPG.CameraUI
 {
 	public class Sun : MonoBehaviour 
 	{
-		void Update ()
-        {
-            float timeScale = FindObjectOfType<DayNightCycle>().GetTimeScale() * 360;
+        float timeScale;
 
+        private void Start()
+        {
+            timeScale = FindObjectOfType<DayNightCycle>().GetTimeScale() * 360;
+        }
+
+        void Update ()
+        {
             float angleThisFrame = Time.deltaTime * timeScale;
 
             transform.RotateAround(transform.position, Vector3.forward, angleThisFrame);
 
         }
+
 	}
 }

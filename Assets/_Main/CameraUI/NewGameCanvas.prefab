@@ -275,7 +275,6 @@ GameObject:
   - component: {fileID: 224266752360558158}
   - component: {fileID: 222326594902442922}
   - component: {fileID: 114758823184877660}
-  - component: {fileID: 114637110759309054}
   m_Layer: 5
   m_Name: Health
   m_TagString: Untagged
@@ -606,17 +605,6 @@ MonoBehaviour:
     m_VerticalOverflow: 0
     m_LineSpacing: 0
   m_Text: 1
---- !u!114 &114637110759309054
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1939363060234244}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e94587b07b71f154f861d927f993fe9c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &114717148315500000
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -958,7 +946,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
-  m_AnchoredPosition: {x: -107.9, y: 31.8}
+  m_AnchoredPosition: {x: -107.899994, y: 31.800049}
   m_SizeDelta: {x: 53, y: 52.8}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &224266752360558158
@@ -1093,7 +1081,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
-  m_AnchoredPosition: {x: -165.1, y: 32.4}
+  m_AnchoredPosition: {x: -165.1, y: 32.399902}
   m_SizeDelta: {x: 51.9, y: 51.6}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &224865379281296190

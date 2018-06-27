@@ -2019,7 +2019,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 87647b89ea5352d4bb20c2347f52a82d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  timeScale: 0.2
+  timeScale: 0.001
   skydome: {fileID: 1652156183699302}
 --- !u!114 &114669177357020918
 MonoBehaviour:

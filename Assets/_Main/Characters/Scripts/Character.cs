@@ -37,6 +37,8 @@ namespace RPG.Characters
         [SerializeField] float agentAngularSpeed = 12f;
         [SerializeField] float agentAcceleration = 10f;
         [SerializeField] float agentStoppingDistance = 1f;
+        [SerializeField] float agentBaseOffset = 1.5f;
+        [SerializeField] bool isRigidBodyKinematic = false;
 
         [Header("Audio")]
         [SerializeField] float audioSourceSpatialBlend = 0f;
@@ -63,6 +65,7 @@ namespace RPG.Characters
             // Add rigidbody, freeze rotation
             myRigidbody = gameObject.AddComponent<Rigidbody>();
             myRigidbody.constraints = RigidbodyConstraints.FreezeRotation;
+            myRigidbody.isKinematic = isRigidBodyKinematic;
 
             // Add NavMeshAgent, define rotation&position&autobraking, stopping distance, speed, angular speed, acceleration
             navMeshAgent = gameObject.AddComponent<NavMeshAgent>();
@@ -73,6 +76,7 @@ namespace RPG.Characters
             navMeshAgent.speed = agentSpeed;
             navMeshAgent.angularSpeed = agentAngularSpeed;
             navMeshAgent.acceleration = agentAcceleration;
+            navMeshAgent.baseOffset = agentBaseOffset;
 
             // Ad AudioSource, false on playonawake&loop, audiospatialblend
             var audioSource = gameObject.AddComponent<AudioSource>();

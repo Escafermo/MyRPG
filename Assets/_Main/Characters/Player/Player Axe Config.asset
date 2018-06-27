@@ -1,0 +1,28 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: db617e1ca56f5c4419340bfb4e525263, type: 3}
+  m_Name: Player Axe Config
+  m_EditorClassIdentifier: 
+  gripTransform: {fileID: 4125232821615860, guid: 07aa02e05ad219b46a226d4c257fb0a3,
+    type: 2}
+  weaponPrefab: {fileID: 1017706808757552, guid: 23d52cd55a28dc947ab3031e7ce225c2,
+    type: 2}
+  attackAnimations:
+  - {fileID: 7400000, guid: f94c62a8b96f5a7469ce0da8ccac09b3, type: 3}
+  - {fileID: 7400000, guid: 5382c9f3a528413448fc27554dd73d74, type: 3}
+  - {fileID: 7400000, guid: 16b4a0031272510489ca40cdfd99c114, type: 3}
+  - {fileID: 7400000, guid: 5937d12bb68bf5f438c6caf3d4222063, type: 3}
+  - {fileID: 7400000, guid: 91784112ca001e74bbc86bbbe8199e56, type: 3}
+  - {fileID: 7400000, guid: f9a41b3feea198048b4d8a29a9268d72, type: 3}
+  timeBetweenAnimationCycles: 0
+  attackRange: 3
+  additionalDamage: 10
+  damageDelay: 0

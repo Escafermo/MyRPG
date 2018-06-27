@@ -41,7 +41,6 @@ namespace RPG.CameraUI
         void Start()
         {
             localCameraPosition = startingPosition;
-          
 
             Vector3 angles = transform.eulerAngles;
             rotationYAxis = angles.y;
@@ -85,7 +84,7 @@ namespace RPG.CameraUI
             panVelocityX = Mathf.Lerp(panVelocityX, 0, Time.deltaTime * smoothTime);
             panVelocityY = Mathf.Lerp(panVelocityY, 0, Time.deltaTime * smoothTime);
 
-            transform.position = target.transform.position;
+            transform.position = target.transform.position; 
 
             //transform.rotation = Quaternion.Lerp(rotation, target.transform.rotation, Time.deltaTime * 10);
 

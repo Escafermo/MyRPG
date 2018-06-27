@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: db617e1ca56f5c4419340bfb4e525263, type: 3}
+  m_Name: Goblin Weapon Config
+  m_EditorClassIdentifier: 
+  gripTransform: {fileID: 4125232821615860, guid: ec03a946eb02cef4b9e2619456d3eff3,
+    type: 2}
+  weaponPrefab: {fileID: 1436855785642766, guid: 8654ac9eec910474789443476ed84cb2,
+    type: 2}
+  attackAnimations:
+  - {fileID: 7400010, guid: 741f73214c8e59045b42ebac4be91444, type: 3}
+  - {fileID: 7400012, guid: 741f73214c8e59045b42ebac4be91444, type: 3}
+  timeBetweenAnimationCycles: 0.5
+  attackRange: 2
+  additionalDamage: 0
+  damageDelay: 0

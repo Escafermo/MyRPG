@@ -1,0 +1,37 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 62e9d0c870156a448af9929474fe1d18, type: 3}
+  m_Name: New Companion Heal Config
+  m_EditorClassIdentifier: 
+  energyCost: 0
+  particleSystem: {fileID: 1545667307448680, guid: 87cae8393bc330943b31b37d8a49de02,
+    type: 2}
+  audioClips:
+  - {fileID: 8300000, guid: c3b569f45127eb8459c96f2af8ef3259, type: 3}
+  - {fileID: 8300000, guid: 783add558b7a2df45b7ddbf00b384c1a, type: 3}
+  - {fileID: 8300000, guid: 52b908d3204056c43b366f0d3d48d3ea, type: 3}
+  - {fileID: 8300000, guid: 3ac2f611279ee6a46b1a1adf899f1036, type: 3}
+  - {fileID: 8300000, guid: a0fa083ff3526dd479e25f0c4a80c9fd, type: 3}
+  - {fileID: 8300000, guid: e074bc75fa0aa074189cb32a49e12ab8, type: 3}
+  animationClips:
+  - {fileID: 7400000, guid: b825a56aacb9490449b35124afe6b549, type: 3}
+  - {fileID: 7400000, guid: 24bf47e4f9d854a40a64bc30e08c14b4, type: 3}
+  - {fileID: 7400000, guid: dafa7e8bcf1bfa24a8c53ec17164800e, type: 3}
+  - {fileID: 7400000, guid: 2e8d3e13711457742b77e131c15013b8, type: 3}
+  - {fileID: 7400000, guid: d30fe2b2195324242a83838ba388da74, type: 3}
+  - {fileID: 7400000, guid: 7aa16589dfc93494caefc6eccf90aa53, type: 3}
+  - {fileID: 7400000, guid: fd2eda3550a6f1344866db46a225eea7, type: 3}
+  - {fileID: 7400000, guid: a8c7ecd9441feb54e831e5b731278cf9, type: 3}
+  - {fileID: 7400000, guid: 2a9f95a324017234aad9ca87272db7bf, type: 3}
+  - {fileID: 7400000, guid: 1d560a4bb04e49543866526067ba1d35, type: 3}
+  - {fileID: 7400000, guid: 02d57a77ed1a98f4597d9eb7cf47057a, type: 3}
+  - {fileID: 7400000, guid: 561e8656203a99b4cabc8ca3f7441c4b, type: 3}
+  healAmount: 50

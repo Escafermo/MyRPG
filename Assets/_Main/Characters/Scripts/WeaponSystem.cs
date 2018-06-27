@@ -13,16 +13,19 @@ namespace RPG.Characters
 
         [SerializeField] WeaponConfig currentWeaponConfig;
         [SerializeField] float baseDamage = 10f;
+        [SerializeField] AudioClip[] arrayOfAttackClips;
 
         Character character;
         Animator animator;
         GameObject target;
         GameObject weaponObject;
+        AudioSource characterAudioSource;
 
         void Start ()
         {
             character = GetComponent<Character>();
             animator = GetComponent<Animator>();
+            characterAudioSource = character.GetComponent<AudioSource>();
 
             PickupWeapon(currentWeaponConfig); 
             SetAttackAnimation(); 
@@ -119,6 +122,7 @@ namespace RPG.Characters
             animator.SetTrigger(ATTACK_TRIGGER);
             float damageDelay = currentWeaponConfig.GetWeaponDelay();
             SetAttackAnimation();
+            PlayRandomAttackSound();
             StartCoroutine(DamageAfterDelay(damageDelay));
         }
 
@@ -159,5 +163,13 @@ namespace RPG.Characters
             animatorOverrideController[DEFAULT_ATTACK] = currentWeaponConfig.GetAttackAnimationClip();  // TODO remove const
         }
 
+        void PlayRandomAttackSound()
+        {
+            //if (arrayOfAttackClips[0] != null)
+            //{
+                var clip = arrayOfAttackClips[UnityEngine.Random.Range(0, arrayOfAttackClips.Length)];
+                characterAudioSource.PlayOneShot(clip); // Play on top of other sounds
+            //}
+        }
     }
 }

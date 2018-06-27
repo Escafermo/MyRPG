@@ -103,7 +103,8 @@ namespace RPG.Characters
         private void PlayRandomHitSound()
         {
             var clip = arrayOfHitClips[UnityEngine.Random.Range(0, arrayOfHitClips.Length)];
-            audioSource.PlayOneShot(clip); // Play on top of other sounds
+            //audioSource.clip = clip;
+            audioSource.PlayOneShot(clip); 
         }
 
         private void PlayRandomDeathSound()

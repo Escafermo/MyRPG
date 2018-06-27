@@ -20,9 +20,12 @@ namespace RPG.Characters
         float currentWeaponRange;
         float distanceToPlayer;
         int nextWaypointIndex;
+        float patrolTimeCounter = 0f;
+        bool timeToMove = false;
 
         PlayerControl player;
         Character character;
+        AudioSource characterAudioSource;
 
         private void Start()
         {
@@ -32,6 +35,8 @@ namespace RPG.Characters
 
         private void Update()
         {
+            IsTimeToMove();
+
             WeaponSystem weaponSystem = GetComponent<WeaponSystem>();
             currentWeaponRange = weaponSystem.GetCurrentWeapon().GetAttackRange();
 
@@ -85,10 +90,23 @@ namespace RPG.Characters
             {
                 Vector3 nextWaypointPos = patrolPath.transform.GetChild(nextWaypointIndex).position;
                 character.SetDestination(nextWaypointPos);
-                CycleWaypointWhenClose(nextWaypointPos);
-                yield return new WaitForSeconds(waypointDwellTime); // TODO parameterise for 0.5f
+                if (timeToMove)
+                {
+                    CycleWaypointWhenClose(nextWaypointPos);
+                    timeToMove = false;
+                    patrolTimeCounter = 0f;
+                }
+                yield return new WaitForEndOfFrame();
             }
+        }
 
+        void IsTimeToMove()
+        {
+            if (patrolTimeCounter >= waypointDwellTime)
+            {
+                timeToMove = true;
+            }
+            patrolTimeCounter += Time.deltaTime;
         }
 
         void CycleWaypointWhenClose(Vector3 nextWaypointPosition)
@@ -99,7 +117,7 @@ namespace RPG.Characters
             }
         }
 
-        private void OnDrawGizmos()
+        void OnDrawGizmos()
         {
             //Draw attack gizmos
             Gizmos.color = new Color(255f, 0f, 0f, 0.5f);
